@@ -11,7 +11,7 @@
         android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="OI TO LOGADO" />
+        android:text="OI TO LOGAD" />
 
     <Button
         android:id="@+id/logout"
