@@ -25,18 +25,25 @@ public class SignInActivity extends AppCompatActivity {
     public void buttonSingInClick(View v) {
         EditText edEmail = (EditText) findViewById(R.id.email_login);
         EditText edPassword = (EditText) findViewById(R.id.senha_login);
-        Intent intent = new Intent(this, HomeActivity.class);
+        final Intent intent = new Intent(this, HomeActivity.class);
         String email = edEmail.getText().toString();
         String password = edPassword.getText().toString();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                String msg = task.isSuccessful() ? "SIGN IN OK!" : "SIGN IN ERROR!";
-                Toast.makeText(SignInActivity.this, msg, Toast.LENGTH_SHORT).show();
+                String msg ;
+                if (task.isSuccessful()) {
+                    msg = "SIGN IN OK!";
+                    Toast.makeText(SignInActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    startActivity(intent);
+                    finish();
+                } else {
+                    msg= "SIGN IN ERROR!";
+                    Toast.makeText(SignInActivity.this, msg, Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
-        startActivity(intent);
-        finish();
     }
 }
