@@ -15,10 +15,14 @@ public class HomeActivity extends AppCompatActivity {
             "The Last of Us", "Dark Souls", "Until Dawn", "Assassins Creed", "AION", "Grand Chase", "Sonic",
             "Super Mario World"};
 
+    private FireBaseAuthListener authListener;
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        this.mAuth = FirebaseAuth.getInstance();
+        this.authListener = new FireBaseAuthListener(this);
         ListView listView = (ListView)findViewById(R.id.list_games);
         listView.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, games));
@@ -29,10 +33,20 @@ public class HomeActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             mAuth.signOut();
-            this.finish();
         } else {
             Toast.makeText(HomeActivity.this, "Error!", Toast.LENGTH_SHORT).show();
         }
 
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(authListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mAuth.removeAuthStateListener(authListener);
     }
 }

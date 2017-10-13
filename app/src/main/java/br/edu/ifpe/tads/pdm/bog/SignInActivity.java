@@ -1,6 +1,5 @@
 package br.edu.ifpe.tads.pdm.bog;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -14,18 +13,21 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SignInActivity extends AppCompatActivity {
-
+    private FireBaseAuthListener authListener;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        this.mAuth = FirebaseAuth.getInstance();
+        this.authListener = new FireBaseAuthListener(this);
     }
 
     public void buttonSingInClick(View v) {
         EditText edEmail = (EditText) findViewById(R.id.email_login);
         EditText edPassword = (EditText) findViewById(R.id.senha_login);
-        final Intent intent = new Intent(this, HomeActivity.class);
+
         String email = edEmail.getText().toString();
         String password = edPassword.getText().toString();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -36,8 +38,6 @@ public class SignInActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     msg = "SIGN IN OK!";
                     Toast.makeText(SignInActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    startActivity(intent);
-                    finish();
                 } else {
                     msg= "SIGN IN ERROR!";
                     Toast.makeText(SignInActivity.this, msg, Toast.LENGTH_SHORT).show();
@@ -45,5 +45,16 @@ public class SignInActivity extends AppCompatActivity {
 
             }
         });
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(authListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mAuth.removeAuthStateListener(authListener);
     }
 }

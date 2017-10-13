@@ -8,18 +8,17 @@
     tools:context="br.edu.ifpe.tads.pdm.bog.HomeActivity">
 
 
-    <ListView
-        android:id="@+id/list_games"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>
-
     <Button
         android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Logout"
         android:onClick="buttonSignOutClick" />
+
+    <ListView
+        android:id="@+id/list_games"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
 
 
 </LinearLayout>
