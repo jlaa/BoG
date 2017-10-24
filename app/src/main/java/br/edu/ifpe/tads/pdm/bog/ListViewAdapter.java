@@ -40,7 +40,6 @@ public class ListViewAdapter extends ArrayAdapter<Games> {
 
         } else {
             holder = (ViewHolder) convertView.getTag();
-            holder.ratingBar.getTag(position);
         }
         holder.ratingBar.setOnRatingBarChangeListener(onRatingChangedListener(holder, position));
         holder.ratingBar.setTag(position);
@@ -61,7 +60,7 @@ public class ListViewAdapter extends ArrayAdapter<Games> {
         };
     }
 
-    private class ViewHolder {
+    static class ViewHolder {
         public RatingBar ratingBar;
         public TextView gameName;
 

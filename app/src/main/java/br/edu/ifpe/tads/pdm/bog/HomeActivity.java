@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,28 +36,29 @@ public class HomeActivity extends AppCompatActivity {
         this.authListener = new FireBaseAuthListener(this);
         ListView listView = (ListView) findViewById(R.id.list_games);
         setGames();
-        adapter = new ListViewAdapter(this, R.layout.activity_home, arrayList);
+        adapter = new ListViewAdapter(this, R.layout.activity_rating_games, arrayList);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(onItemClickListener());
-    }
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-    private AdapterView.OnItemClickListener onItemClickListener() {
-        return new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final Dialog dialog = new Dialog(HomeActivity.this);
-                dialog.setContentView(R.layout.activity_home);
-                dialog.setTitle("Game details");
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    final Dialog dialog = new Dialog(HomeActivity.this);
+                    dialog.setContentView(R.layout.dialog_layout);
+                    dialog.setTitle("Game details");
 
-                TextView name = (TextView) dialog.findViewById(R.id.nomeJogo);
-                RatingBar starRate = (RatingBar) dialog.findViewById(R.id.ratingBar);
+                    TextView name = (TextView) dialog.findViewById(R.id.game_name);
+                    TextView starRate = (TextView) dialog.findViewById(R.id.rate);
 
-                Games game = (Games) parent.getAdapter().getItem(position);
-                name.setText("Nome do jogo: " + game.getNome());
-                starRate.setNumStars(starRate.getNumStars());
-            }
-        };
-    }
+                    Games game = (Games) parent.getAdapter().getItem(position);
+                    name.setText("Nome do jogo: " + game.getNome());
+                    starRate.setText("Numero de estrelas"+game.getRatingBar());
+                    dialog.show();
+                }
+            });
+        }
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
