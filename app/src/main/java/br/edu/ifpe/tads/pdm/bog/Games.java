@@ -5,8 +5,16 @@ package br.edu.ifpe.tads.pdm.bog;
  */
 
 public class Games {
+
     private String nome;
-    private String categoria;
+    //private String categoria;
+    private float ratingBar;
+
+    public Games(String nome,float ratingBar)
+    {
+        this.nome=nome;
+        this.ratingBar=ratingBar;
+    }
 
     public String getNome() {
         return nome;
@@ -16,11 +24,19 @@ public class Games {
         this.nome = nome;
     }
 
-    public String getCategoria() {
+    public float getRatingBar() {
+        return ratingBar;
+    }
+
+    public void setRatingBar(float ratingBar) {
+        this.ratingBar = ratingBar;
+    }
+
+    /* public String getCategoria() {
         return categoria;
     }
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
-    }
+    }*/
 }
