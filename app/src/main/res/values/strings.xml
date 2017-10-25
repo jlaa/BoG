@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BoG</string>
+    <string name="logout">Logout</string>
+    <string name="help">Ajuda</string>
+    <string name="rating">Enviar</string>
+    <string name="avaliar">Avaliar</string>
+
+
+</resources>
