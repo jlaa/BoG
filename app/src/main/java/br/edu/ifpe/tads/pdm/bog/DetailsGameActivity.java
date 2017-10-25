@@ -5,14 +5,22 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class DetailsGameActivity extends AppCompatActivity {
-
+    private FireBaseAuthListener authListener;
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        this.mAuth = FirebaseAuth.getInstance();
+        this.authListener = new FireBaseAuthListener(this);
         setContentView(R.layout.activity_details_game);
         Intent i = getIntent();
         Games game = (Games)i.getSerializableExtra("game");
@@ -35,5 +43,26 @@ public class DetailsGameActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.logout:
+                mAuth = FirebaseAuth.getInstance();
+                FirebaseUser user = mAuth.getCurrentUser();
+                if (user != null) {
+                    mAuth.signOut();
+                } else {
+                    Toast.makeText(DetailsGameActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            case R.id.help:
+                Toast.makeText(DetailsGameActivity.this, "Não conseguimos lhe fornecer ajuda! Desculpa ;---;", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
     }
 }

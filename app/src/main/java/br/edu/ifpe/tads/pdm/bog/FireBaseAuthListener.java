@@ -24,7 +24,7 @@ public class FireBaseAuthListener implements FirebaseAuth.AuthStateListener {
         }
         if((user==null)&&(activity instanceof HomeActivity))
         {
-            intent = new Intent(activity,MainActivity.class);
+            intent = new Intent(activity,SignInActivity.class);
         }
         if(intent !=null)
         {

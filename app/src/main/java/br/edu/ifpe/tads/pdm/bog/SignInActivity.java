@@ -1,5 +1,6 @@
 package br.edu.ifpe.tads.pdm.bog;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -47,6 +48,14 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void toRegister(View view)
+    {
+        Intent intent = new Intent(this,SignUpActivity.class);
+        startActivity(intent);
+
+    }
+
     @Override
     public void onStart() {
         super.onStart();
