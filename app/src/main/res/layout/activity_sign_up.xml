@@ -42,7 +42,7 @@
             android:background="@color/colorPrimaryDark"
             android:textStyle="bold"
             android:onClick="buttonSingUpClick"/>
-        </LinearLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

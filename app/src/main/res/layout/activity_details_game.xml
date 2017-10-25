@@ -7,31 +7,41 @@
     android:orientation="vertical"
     tools:context="br.edu.ifpe.tads.pdm.bog.DetailsGameActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+
+    <TextView
+        android:id="@+id/rate"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="20sp"/>
 
-        <ImageView
-            android:id="@+id/image_game"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/categoria"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="20sp"/>
+
+    <ScrollView
+        android:id="@+id/ScrollView01"
+        android:layout_width="wrap_content"
+        android:layout_height="150dip">
 
         <TextView
-            android:id="@+id/name_game"
+            android:id="@+id/descricao"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:textSize="20sp">
+        </TextView>
 
-        <TextView
-            android:id="@+id/description_game"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    </ScrollView>
 
-        <TextView
-            android:id="@+id/category_game"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+
 
 
 </LinearLayout>
