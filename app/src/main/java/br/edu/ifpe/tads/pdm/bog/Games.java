@@ -1,19 +1,24 @@
 package br.edu.ifpe.tads.pdm.bog;
 
+import java.io.Serializable;
+
 /**
  * Created by isabella on 12/10/2017.
  */
 
-public class Games {
+public class Games implements Serializable {
 
     private String nome;
-    //private String categoria;
+    private String categoria;
     private float ratingBar;
+    //private float imagem;
+    private String descricao;
 
-    public Games(String nome,float ratingBar)
-    {
-        this.nome=nome;
-        this.ratingBar=ratingBar;
+    public Games(String nome, float ratingBar, String categoria, String descricao) {
+        this.nome = nome;
+        this.ratingBar = ratingBar;
+        this.categoria = categoria;
+        this.descricao = descricao;
     }
 
     public String getNome() {
@@ -32,11 +37,19 @@ public class Games {
         this.ratingBar = ratingBar;
     }
 
-    /* public String getCategoria() {
+    public String getCategoria() {
         return categoria;
     }
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
-    }*/
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 }
