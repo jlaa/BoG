@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "210006915872-eroop08roc3a10kul8gjbmd05kir0tae.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.edu.ifpe.tads.pdm.bog",
+            "certificate_hash": "669ecc9ff7407a4ab28e884e441c0787c3223430"
+          }
+        },
+        {
           "client_id": "210006915872-emoif6je62bt1qh2gaslipkdj1hbpsqs.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

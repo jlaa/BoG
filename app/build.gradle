@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "br.edu.ifpe.tads.pdm.bog"
         minSdkVersion 19
@@ -29,11 +29,6 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:10.0.1'
     testCompile 'junit:junit:4.12'
 }
-
-
-
-
-
 
 
 apply plugin: 'com.google.gms.google-services'
