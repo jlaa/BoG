@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context="br.edu.ifpe.tads.pdm.bog.SignInActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/email_login"
+            android:hint="Email"
+            android:textColorHint="@android:color/background_light"
+            android:textColor="@android:color/background_light"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <EditText
+            android:id="@+id/senha_login"
+            android:hint="Senha"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColorHint="@android:color/background_light"
+            android:textColor="@android:color/background_light"
+            android:inputType="textPassword"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/logar"
+                android:text="Acessar"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@android:color/background_light"
+                android:textStyle="bold"
+                android:onClick="buttonSingInClick"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:text="Cadastre-se no Bank Of Games."
+            android:layout_marginTop="200dp"
+            android:layout_marginLeft="50dp"
+            android:textColor="@android:color/background_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:linksClickable="true"
+            android:onClick="toRegister"/>
+
+    </LinearLayout>
+</LinearLayout>
