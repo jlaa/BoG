@@ -23,14 +23,6 @@
           }
         },
         {
-          "client_id": "210006915872-emoif6je62bt1qh2gaslipkdj1hbpsqs.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "br.edu.ifpe.tads.pdm.bog",
-            "certificate_hash": "eb9230711289330b9e144c717865c26041c5bd74"
-          }
-        },
-        {
           "client_id": "210006915872-4aeckghs5hfeojgttha1ge0isi6cau2d.apps.googleusercontent.com",
           "client_type": 3
         }
