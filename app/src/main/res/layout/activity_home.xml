@@ -6,12 +6,13 @@
     android:orientation="vertical"
     tools:context="br.edu.ifpe.tads.pdm.bog.HomeActivity">
 
-
-
-    <ListView
-        android:id="@+id/list_games"
+    <ExpandableListView
+        android:id="@+id/lvExp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent">
+
+    </ExpandableListView>
+
 
 
 </LinearLayout>

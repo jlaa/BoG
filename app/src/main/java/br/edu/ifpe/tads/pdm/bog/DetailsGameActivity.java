@@ -40,6 +40,7 @@ public class DetailsGameActivity extends AppCompatActivity {
     }
 
     @Override
+
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(authListener);
