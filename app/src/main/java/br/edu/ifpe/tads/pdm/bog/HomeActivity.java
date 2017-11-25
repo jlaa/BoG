@@ -14,11 +14,18 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import br.edu.ifpe.tads.pdm.bog.Model.Games;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -38,90 +45,77 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private ArrayAdapter<Games> adapter;
 
+    private DatabaseReference drGames;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
-        setGames();
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         this.mAuth = FirebaseAuth.getInstance();
         this.authListener = new FireBaseAuthListener(this);
 
-        setGames();
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, Games>();
 
-        expListView = (ExpandableListView) findViewById(R.id.lvExp);
+        final FirebaseDatabase fbDB = FirebaseDatabase.getInstance();
 
-        prepareListData();
+        drGames = fbDB.getReference("games");
 
-        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+        drGames.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                expListView = (ExpandableListView) findViewById(R.id.lvExp);
 
-        expListView.setAdapter(listAdapter);
-        expListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                listAdapter = new ExpandableListAdapter(HomeActivity.this, listDataHeader, listDataChild);
+
+                expListView.setAdapter(listAdapter);
+                expListView.setOnItemClickListener(new AdapterView.OnItemClickListener()         {
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        game = (Games) parent.getAdapter().getItem(position);
+                    }
+                });
+
+                for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                    Games games = childSnapshot.getValue(Games.class);
+                    if(!listDataHeader.contains(games.getNome())) {
+                        if (games != null) {
+                            prepareListData(games);
+                        }
+                    }
+                }
+
+            }
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                game = (Games) parent.getAdapter().getItem(position);
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
-
-
-
-       /* expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+        drGames.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Games games = dataSnapshot.getValue(Games.class);
+                Toast.makeText(HomeActivity.this,"O jogo " + games.getNome()+" foi adicionado",Toast.LENGTH_SHORT);
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
 
             @Override
-            public boolean onGroupClick(ExpandableListView parent, View v,
-                                        int groupPosition, long id) {
-                // Toast.makeText(getApplicationContext(),
-                // "Group Clicked " + listDataHeader.get(groupPosition),
-                // Toast.LENGTH_SHORT).show();
-                return false;
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
             }
         });
-
-        // Listview Group expanded listener
-        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        listDataHeader.get(groupPosition) + " Expanded",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Listview Group collasped listener
-        expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        listDataHeader.get(groupPosition) + " Collapsed",
-                        Toast.LENGTH_SHORT).show();
-
-            }
-        });*/
-
-        // Listview on child click listener
-        /*expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                // TODO Auto-generated method stub
-                Toast.makeText(
-                        getApplicationContext(),
-                        listDataHeader.get(groupPosition)
-                                + " : "
-                                + listDataChild.get(
-                                listDataHeader.get(groupPosition)).get(childPosition), Toast.LENGTH_SHORT)
-                        .show();
-                return false;
-            }
-        });*/
 
     }
 
@@ -168,10 +162,8 @@ public class HomeActivity extends AppCompatActivity {
         mAuth.removeAuthStateListener(authListener);
     }
 
-    public void setGames() {
-        /*private static final Games [] games = {"League of legends", "Paladins", "Overwatch", "Mortal Kombat",
-            "The Last of Us", "Dark Souls", "Until Dawn", "Assassins Creed", "AION", "Grand Chase", "Sonic",
-            "Super Mario World"};*/
+    /*public void setGames() {
+
 
         gamesList.add(new Games("League of Legends", 5, "Moba", "League of Legends é um jogo eletrônico do gênero multiplayer online battle arena, desenvolvido e publicado pela Riot Games. Um estilo moba como você nunca viu antes"));
         gamesList.add(new Games("Paladins", 4, "FPS/Ação", "A versão para pobres do overwatch"));
@@ -187,32 +179,26 @@ public class HomeActivity extends AppCompatActivity {
         gamesList.add(new Games("Super Mario World", 5, "Aventura", "Saia correndo feito louco e mate a tartaruga, ah salve a princesa no fim!"));
 
 
-    }
+    }*/
 
-    private void prepareListData() {
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, Games>();
+    private void prepareListData(Games games) {
 
-        // Adding data header
-
-        for(int i=0; i<gamesList.size(); i ++) {
-            listDataHeader.add(gamesList.get(i).getNome());
-        }
-
-
-        listDataChild.put(listDataHeader.get(0), gamesList.get(0));
-        listDataChild.put(listDataHeader.get(1), gamesList.get(1));
-        listDataChild.put(listDataHeader.get(2), gamesList.get(2));
-
+        listDataHeader.add(games.getNome());
+        listDataChild.put(games.getNome(),games);
 
     }
 
-    public void moreButtonClick (View view){
+   /* public void moreButtonClick(View view) {
 
         Intent intent = new Intent(HomeActivity.this, DetailsGameActivity.class);
         intent.putExtra("game", game);
         startActivity(intent);
 
+    }*/
+
+    public void onClickAdicionarJogo(View view) {
+        Intent intent = new Intent(this, AddGameActivity.class);
+        startActivity(intent);
     }
 
 

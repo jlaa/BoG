@@ -12,6 +12,8 @@ import android.widget.TextView;
 import java.util.HashMap;
 import java.util.List;
 
+import br.edu.ifpe.tads.pdm.bog.Model.Games;
+
 /**
  * Created by isabella on 22/11/2017.
  */
@@ -95,7 +97,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 .findViewById(R.id.lblListHeader);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
-
         return convertView;
     }
 

@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import br.edu.ifpe.tads.pdm.bog.Model.Games;
+
 public class DetailsGameActivity extends AppCompatActivity {
     private FireBaseAuthListener authListener;
     private FirebaseAuth mAuth;

@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import br.edu.ifpe.tads.pdm.bog.Model.Games;
+
 public class ListViewAdapter extends ArrayAdapter<Games> {
 
     private AppCompatActivity activity;

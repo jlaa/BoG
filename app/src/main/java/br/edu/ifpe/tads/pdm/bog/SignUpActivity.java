@@ -11,6 +11,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import br.edu.ifpe.tads.pdm.bog.Model.User;
 
 public class SignUpActivity extends AppCompatActivity {
     private FireBaseAuthListener authListener;
@@ -26,17 +30,24 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void buttonSingUpClick(View view) {
+        EditText edName = (EditText) findViewById(R.id.name_register);
         EditText edMail = (EditText) findViewById(R.id.email_register);
         EditText edPassword = (EditText) findViewById(R.id.senha_register);
-        String email = edMail.getText().toString();
-        String password = edPassword.getText().toString();
+        final String name = edName.getText().toString();
+        final String email = edMail.getText().toString();
+        final String password = edPassword.getText().toString();
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 String msg = task.isSuccessful() ? "SIGN UP OK!" : "SIGN UP ERROR!";
                 Toast.makeText(SignUpActivity.this, msg, Toast.LENGTH_SHORT).show();
+                if (task.isSuccessful()) {
+                    User tempUser = new User(name, email);
+                    DatabaseReference drUsers = FirebaseDatabase.getInstance().getReference("users");
+                    drUsers.child(mAuth.getCurrentUser().getUid()).setValue(tempUser);
+                }
             }
         });
     }

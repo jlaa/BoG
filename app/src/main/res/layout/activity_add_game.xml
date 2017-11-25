@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="br.edu.ifpe.tads.pdm.bog.AddGameActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Digite os dados do jogo"
+        android:textSize="40px"
+        android:textColor="#000000"
+        android:layout_gravity="center"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Nome do Jogo"
+        android:id="@+id/add_name_game"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Categoria"
+        android:id="@+id/add_categoria_game"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Diga a qualidade do jogo para você:"
+        android:textSize="35px"
+        android:textColor="#000000"/>
+    <RatingBar
+        android:id="@+id/add_rating_bar"
+        style="@style/ratingBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:maxWidth="20dp"
+        android:minWidth="20dp"
+        android:numStars="5"
+        android:stepSize="1" />
+
+    <ScrollView
+        android:id="@+id/ScrollView01"
+        android:layout_width="300dip"
+        android:layout_height="200dip">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Descrição"
+            android:id="@+id/add_descricao_game"/>
+
+    </ScrollView>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Adicionar Jogo"
+        android:onClick="adicionarJogo"/>
+
+
+
+
+</LinearLayout>

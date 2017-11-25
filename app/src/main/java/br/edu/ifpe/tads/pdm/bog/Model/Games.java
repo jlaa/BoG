@@ -1,18 +1,26 @@
-package br.edu.ifpe.tads.pdm.bog;
+package br.edu.ifpe.tads.pdm.bog.Model;
+
+import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.io.Serializable;
 
 /**
  * Created by isabella on 12/10/2017.
  */
-
+@IgnoreExtraProperties
 public class Games implements Serializable {
 
-    private String nome;
-    private String categoria;
+    private final String nome;
+    private final String categoria;
     private float ratingBar;
     //private float imagem;
-    private String descricao;
+    private final String descricao;
+
+    public Games(){
+        this.nome=null;
+        this.categoria=null;
+        this.descricao=null;
+    }
 
     public Games(String nome, float ratingBar, String categoria, String descricao) {
         this.nome = nome;
@@ -23,10 +31,6 @@ public class Games implements Serializable {
 
     public String getNome() {
         return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public float getRatingBar() {
@@ -41,15 +45,8 @@ public class Games implements Serializable {
         return categoria;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
     public String getDescricao() {
         return descricao;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
 }
