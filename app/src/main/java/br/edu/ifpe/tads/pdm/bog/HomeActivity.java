@@ -82,28 +82,30 @@ public class HomeActivity extends AppCompatActivity {
 
                     user = childSnapshot.getValue(User.class);
 
-                        if (user != null) {
-                            String txtLogout =  getResources().getString(R.string.logout);
-                            String txtHelp =  getResources().getString(R.string.help);
+
+                    if (user != null) {
+                        if (mAuth.getCurrentUser().getEmail().equals(user.getEmail())) {
+                            String txtLogout = getResources().getString(R.string.logout);
+                            String txtHelp = getResources().getString(R.string.help);
                             String txtPerfil = user.getName();
-                            mDataList =  new ArrayList();
+                            mDataList = new ArrayList();
                             mDataList.add(txtPerfil);
                             mDataList.add(txtLogout);
                             mDataList.add(txtHelp);
                             mDrawerList.setAdapter(new ArrayAdapter(HomeActivity.this,
-                                    R.layout.drawer_list_item,R.id.drawer, mDataList));
-                        }else if (user==null)
-                        {
-                            String txtLogout =  getResources().getString(R.string.logout);
-                            String txtHelp =  getResources().getString(R.string.help);
-                            String txtPerfil = "Anônimo";
-                            mDataList =  new ArrayList();
-                            mDataList.add(txtPerfil);
-                            mDataList.add(txtLogout);
-                            mDataList.add(txtHelp);
-                            mDrawerList.setAdapter(new ArrayAdapter(HomeActivity.this,
-                                    R.layout.drawer_list_item,R.id.drawer, mDataList));
+                                    R.layout.drawer_list_item, R.id.drawer, mDataList));
                         }
+                    } else if (user == null) {
+                        String txtLogout = getResources().getString(R.string.logout);
+                        String txtHelp = getResources().getString(R.string.help);
+                        String txtPerfil = "Anônimo";
+                        mDataList = new ArrayList();
+                        mDataList.add(txtPerfil);
+                        mDataList.add(txtLogout);
+                        mDataList.add(txtHelp);
+                        mDrawerList.setAdapter(new ArrayAdapter(HomeActivity.this,
+                                R.layout.drawer_list_item, R.id.drawer, mDataList));
+                    }
 
                 }
             }
@@ -115,106 +117,128 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-        drGames.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                expListView = (ExpandableListView) findViewById(R.id.lvExp);
+        drGames.addValueEventListener(new
 
-                listAdapter = new ExpandableListAdapter(HomeActivity.this, listDataHeader, listDataChild);
+                                              ValueEventListener() {
+                                                  @Override
+                                                  public void onDataChange(DataSnapshot dataSnapshot) {
+                                                      expListView = (ExpandableListView) findViewById(R.id.lvExp);
 
-                expListView.setAdapter(listAdapter);
-                expListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                      listAdapter = new ExpandableListAdapter(HomeActivity.this, listDataHeader, listDataChild);
 
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        game = (Games) parent.getAdapter().getItem(position);
-                    }
-                });
+                                                      expListView.setAdapter(listAdapter);
+                                                      expListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                    Games games = childSnapshot.getValue(Games.class);
-                    if (!listDataHeader.contains(games.getNome())) {
-                        if (games != null) {
-                            prepareListData(games);
-                        }
-                    }
-                }
+                                                          @Override
+                                                          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                              game = (Games) parent.getAdapter().getItem(position);
+                                                          }
+                                                      });
 
-            }
+                                                      for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                                          Games games = childSnapshot.getValue(Games.class);
+                                                          if (!listDataHeader.contains(games.getNome())) {
+                                                              if (games != null) {
+                                                                  prepareListData(games);
+                                                              }
+                                                          }
+                                                      }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                                                  }
 
-            }
-        });
-        drGames.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Games games = dataSnapshot.getValue(Games.class);
-                Toast.makeText(HomeActivity.this, "O jogo " + games.getNome() + " foi adicionado", Toast.LENGTH_SHORT);
-            }
+                                                  @Override
+                                                  public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-            }
+                                                  }
+                                              });
+        drGames.addChildEventListener(new
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-            }
+                                              ChildEventListener() {
+                                                  @Override
+                                                  public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                                      Games games = dataSnapshot.getValue(Games.class);
+                                                      Toast.makeText(HomeActivity.this, "O jogo " + games.getNome() + " foi adicionado", Toast.LENGTH_SHORT);
+                                                  }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-            }
+                                                  @Override
+                                                  public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                                                  }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
+                                                  @Override
+                                                  public void onChildRemoved(DataSnapshot dataSnapshot) {
+                                                  }
 
-        mTitle = mDrawerTitle = getTitle();
+                                                  @Override
+                                                  public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                                                  }
+
+                                                  @Override
+                                                  public void onCancelled(DatabaseError databaseError) {
+                                                  }
+                                              });
+
+        mTitle = mDrawerTitle =
+
+                getTitle();
 
         mDataList = new ArrayList<>();
 
-        String txtLogout =  getResources().getString(R.string.logout);
-        String txtHelp =  getResources().getString(R.string.help);
+        String txtLogout = getResources().getString(R.string.logout);
+        String txtHelp = getResources().getString(R.string.help);
         String txtPerfil = "Anonimo";
         mDataList.add(txtPerfil);
         mDataList.add(txtLogout);
         mDataList.add(txtHelp);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = (DrawerLayout)
 
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+                findViewById(R.id.drawer_layout);
+
+        mDrawerList = (ListView)
+
+                findViewById(R.id.left_drawer);
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
         mDrawerList.setAdapter(new ArrayAdapter<>(this,
-                R.layout.drawer_list_item,R.id.drawer, mDataList));
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+                R.layout.drawer_list_item, R.id.drawer, mDataList));
+        mDrawerList.setOnItemClickListener(new
+
+                DrawerItemClickListener());
+
+        getSupportActionBar().
+
+                setDisplayHomeAsUpEnabled(true);
+
+        getSupportActionBar().
+
+                setHomeButtonEnabled(true);
+
         Toolbar toolBar = new Toolbar(this);
         toolBar.setNavigationIcon(R.drawable.ic_drawer);
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                mDrawerLayout,         /* DrawerLayout object */
-                toolBar,  /* nav drawer icon to replace 'Up' caret */
-                R.string.drawer_open,  /* "open drawer" description */
-                R.string.drawer_close  /* "close drawer" description */
-        ) {
+        mDrawerToggle = new
 
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(mTitle);
-            }
+                ActionBarDrawerToggle(
+                        this,                  /* host Activity */
+                        mDrawerLayout,         /* DrawerLayout object */
+                        toolBar,  /* nav drawer icon to replace 'Up' caret */
+                        R.string.drawer_open,  /* "open drawer" description */
+                        R.string.drawer_close  /* "close drawer" description */
+                ) {
 
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle(mDrawerTitle);
-            }
-        };
+                    /** Called when a drawer has settled in a completely closed state. */
+                    public void onDrawerClosed(View view) {
+                        super.onDrawerClosed(view);
+                        getSupportActionBar().setTitle(mTitle);
+                    }
+
+                    /** Called when a drawer has settled in a completely open state. */
+
+                    public void onDrawerOpened(View drawerView) {
+                        super.onDrawerOpened(drawerView);
+                        getSupportActionBar().setTitle(mDrawerTitle);
+                    }
+                };
 
         /*// Set the drawer toggle as the DrawerListener
         mDrawerLayout.addDrawerListener(mDrawerToggle);
@@ -224,7 +248,6 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
-
 
 
     //DrawerLayout
@@ -254,7 +277,7 @@ public class HomeActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    //Drawer Layout
+//Drawer Layout
 
     /**
      * Swaps fragments in the main content view
@@ -272,29 +295,31 @@ public class HomeActivity extends AppCompatActivity {
                 break;
             case "Help":
                 Toast.makeText(HomeActivity.this, "Não conseguimos lhe fornecer ajuda! Desculpa ;---;", Toast.LENGTH_SHORT).show();
-            break;
+                break;
         }
 
-        if(user.getName()==text)
-        {
+        if (user.getName() == text) {
             Toast.makeText(HomeActivity.this, "Olá " + user.getName(), Toast.LENGTH_SHORT).show();
 
         }
         mDrawerLayout.closeDrawer(mDrawerList);
     }
+
     //Drawer Layout
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
         getSupportActionBar().setTitle(mTitle);
     }
+
     //Drawer Layout
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            String drawerText =  (String) parent.getItemAtPosition(position);
+            String drawerText = (String) parent.getItemAtPosition(position);
             selectItem(drawerText);
         }
+
     }
     /*//Menu
     @Override
@@ -378,8 +403,6 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AddGameActivity.class);
         startActivity(intent);
     }
-
-
 
 
 }
