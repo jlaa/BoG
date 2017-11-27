@@ -94,6 +94,7 @@ public class HomeActivity extends AppCompatActivity {
                             mDataList.add(txtHelp);
                             mDrawerList.setAdapter(new ArrayAdapter(HomeActivity.this,
                                     R.layout.drawer_list_item, R.id.drawer, mDataList));
+                            break;
                         }
                     } else if (user == null) {
                         String txtLogout = getResources().getString(R.string.logout);
@@ -105,6 +106,7 @@ public class HomeActivity extends AppCompatActivity {
                         mDataList.add(txtHelp);
                         mDrawerList.setAdapter(new ArrayAdapter(HomeActivity.this,
                                 R.layout.drawer_list_item, R.id.drawer, mDataList));
+                        break;
                     }
 
                 }
@@ -117,65 +119,61 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-        drGames.addValueEventListener(new
+        drGames.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                expListView = (ExpandableListView) findViewById(R.id.lvExp);
 
-                                              ValueEventListener() {
-                                                  @Override
-                                                  public void onDataChange(DataSnapshot dataSnapshot) {
-                                                      expListView = (ExpandableListView) findViewById(R.id.lvExp);
+                listAdapter = new ExpandableListAdapter(HomeActivity.this, listDataHeader, listDataChild);
 
-                                                      listAdapter = new ExpandableListAdapter(HomeActivity.this, listDataHeader, listDataChild);
+                expListView.setAdapter(listAdapter);
+                expListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-                                                      expListView.setAdapter(listAdapter);
-                                                      expListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        game = (Games) parent.getAdapter().getItem(position);
+                    }
+                });
 
-                                                          @Override
-                                                          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                                              game = (Games) parent.getAdapter().getItem(position);
-                                                          }
-                                                      });
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    Games games = childSnapshot.getValue(Games.class);
+                    if (!listDataHeader.contains(games.getNome())) {
+                        if (games != null) {
+                            prepareListData(games);
+                        }
+                    }
+                }
 
-                                                      for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                                          Games games = childSnapshot.getValue(Games.class);
-                                                          if (!listDataHeader.contains(games.getNome())) {
-                                                              if (games != null) {
-                                                                  prepareListData(games);
-                                                              }
-                                                          }
-                                                      }
+            }
 
-                                                  }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-                                                  @Override
-                                                  public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+        drGames.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Games games = dataSnapshot.getValue(Games.class);
+                Toast.makeText(HomeActivity.this, "O jogo " + games.getNome() + " foi adicionado", Toast.LENGTH_SHORT);
+            }
 
-                                                  }
-                                              });
-        drGames.addChildEventListener(new
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
 
-                                              ChildEventListener() {
-                                                  @Override
-                                                  public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                                      Games games = dataSnapshot.getValue(Games.class);
-                                                      Toast.makeText(HomeActivity.this, "O jogo " + games.getNome() + " foi adicionado", Toast.LENGTH_SHORT);
-                                                  }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
 
-                                                  @Override
-                                                  public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                                                  }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
 
-                                                  @Override
-                                                  public void onChildRemoved(DataSnapshot dataSnapshot) {
-                                                  }
-
-                                                  @Override
-                                                  public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                                                  }
-
-                                                  @Override
-                                                  public void onCancelled(DatabaseError databaseError) {
-                                                  }
-                                              });
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
 
         mTitle = mDrawerTitle =
 
