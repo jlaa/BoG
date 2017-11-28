@@ -7,55 +7,84 @@
     android:orientation="vertical"
     tools:context="br.edu.ifpe.tads.pdm.bog.MinhaListaActivity">
 
-    <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/drawer_layout"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="250dp"
+        android:orientation="vertical"
+        android:background="@mipmap/drage">
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="150dp"
+            android:src="@mipmap/penguinboss"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"/>
+        <TextView
+            android:id="@+id/perfilName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Oi turu bom?"
+            android:layout_marginTop="20dp"
+            android:textSize="20dp"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/white"/>
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
 
-        <!-- The main content view -->
-        <FrameLayout
-            android:id="@+id/content_frame"
+        <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/drawer_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
+
+            <!-- The main content view -->
+            <FrameLayout
+                android:id="@+id/content_frame"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Lista dos Jogos Jogados:"
-                    android:textSize="20dp" />
-
-
-                <ExpandableListView
-                    android:id="@+id/myListGames"
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"></ExpandableListView>
-            </LinearLayout>
-
-        </FrameLayout>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
 
-        <!-- The navigation drawer -->
+                    <TextView
+                        android:text="Lista de favoritos:"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:layout_marginLeft="10dp"
+                        android:textStyle="bold"/>
 
 
-        <ListView
-            android:id="@+id/left_drawer"
-            android:layout_width="240dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="#111"
-            android:choiceMode="singleChoice"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp" />
+                    <ExpandableListView
+                        android:id="@+id/myListGames"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"></ExpandableListView>
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <ListView
+                android:id="@+id/left_drawer"
+                android:layout_width="240dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:background="#111"
+                android:choiceMode="singleChoice"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="0dp" />
 
 
-    </android.support.v4.widget.DrawerLayout>
+        </android.support.v4.widget.DrawerLayout>
+    </LinearLayout>
 
 </LinearLayout>
