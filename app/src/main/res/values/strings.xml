@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">BoG</string>
+    <string name="logout">Logout</string>
+    <string name="help">Help</string>
+    <string name="rating">Enviar</string>
+    <string name="avaliar">Avaliar</string>
+    <string name="adicionar_jogo">Adicionar Jogo</string>
+    <string name="drawer_open">Oper Drawer</string>
+    <string name="drawer_close">Close Drawer</string>
+    <string name="action_websearch">Sei la</string>
+
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
+
+
+</resources>
