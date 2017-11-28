@@ -81,12 +81,16 @@ public class MinhaListaActivity extends AppCompatActivity {
 
                 listMyGamesAdapter = new ExpandableListAdapter(MinhaListaActivity.this, myListDataHeader, myListDataChild);
                 expMyListView.setAdapter(listMyGamesAdapter);
-                expMyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                expMyListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
 
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        game = (Games) parent.getAdapter().getItem(position);
+                    public boolean onGroupClick(ExpandableListView parent, View v,
+                                                int groupPosition, long id) {
+                        // game = (Games) parent.getAdapter().getItem(groupPosition);
+                        game=(Games) parent.getExpandableListAdapter().getChild(groupPosition,groupPosition);
+                        return false;
                     }
+
                 });
 
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
@@ -265,6 +269,14 @@ public class MinhaListaActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         mAuth.removeAuthStateListener(authListener);
+    }
+
+    public void moreButtonClickMyList(View view) {
+
+        Intent intent = new Intent(MinhaListaActivity.this, DetailsGameActivity.class);
+        intent.putExtra("game", game);
+        startActivity(intent);
+
     }
 
 }

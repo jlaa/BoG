@@ -105,6 +105,9 @@ public class HomeActivity extends AppCompatActivity {
                             mDrawerList.setAdapter(new ArrayAdapter(HomeActivity.this,
                                     R.layout.drawer_list_item, R.id.drawer, mDataList));
                             break;
+                        } //olhar essa linha se der algo errado
+                         else {
+                            user = null;
                         }
                     } else if (user == null) {
                         String txtLogout = getResources().getString(R.string.logout);
@@ -151,8 +154,8 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public boolean onGroupClick(ExpandableListView parent, View v,
                                                 int groupPosition, long id) {
-                       // game = (Games) parent.getAdapter().getItem(groupPosition);
-                        game=(Games) parent.getExpandableListAdapter().getChild(groupPosition,groupPosition);
+                        // game = (Games) parent.getAdapter().getItem(groupPosition);
+                        game = (Games) parent.getExpandableListAdapter().getChild(groupPosition, groupPosition);
                         return false;
                     }
 
@@ -191,7 +194,7 @@ public class HomeActivity extends AppCompatActivity {
 
         mTitle = mDrawerTitle = getTitle();
         mDataList = new ArrayList<>();
-        mDrawerLayout = (DrawerLayout)  findViewById(R.id.drawer_layout);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         // set a custom shadow that overlays the main content when the drawer opens
@@ -269,8 +272,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private void selectItem(String text) {
         switch (text) {
-            case "Home" :
-                Intent intents = new Intent(this,HomeActivity.class);
+            case "Home":
+                Intent intents = new Intent(this, HomeActivity.class);
                 startActivity(intents);
                 finish();
                 break;
@@ -287,7 +290,7 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(HomeActivity.this, "Não conseguimos lhe fornecer ajuda! Desculpa ;---;", Toast.LENGTH_SHORT).show();
                 break;
             case "Minha Lista":
-                Intent intent = new Intent(this,MinhaListaActivity.class);
+                Intent intent = new Intent(this, MinhaListaActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -336,13 +339,13 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-   /* public void moreButtonClick(View view) {
+    public void moreButtonClick(View view) {
 
         Intent intent = new Intent(HomeActivity.this, DetailsGameActivity.class);
         intent.putExtra("game", game);
         startActivity(intent);
 
-    }*/
+    }
 
     public void onClickAdicionarJogo(View view) {
         Intent intent = new Intent(this, AddGameActivity.class);
@@ -351,21 +354,19 @@ public class HomeActivity extends AppCompatActivity {
 
     public void onClickAdicionarAMinhaLista(View v) {
         Map<String, Object> childUpdates = new HashMap<>();
-        boolean jaTenho=false;
-        for(int i =0 ;i<user.getGamesJogados().size();i++)
-        {
-         if(user.getGamesJogados().get(i).getNome().equals(game.getNome()))
-         {
-             jaTenho = true;
-             break;
-         }
+        boolean jaTenho = false;
+        for (int i = 0; i < user.getGamesJogados().size(); i++) {
+            if (user.getGamesJogados().get(i).getNome().equals(game.getNome())) {
+                jaTenho = true;
+                break;
+            }
         }
-        if(!jaTenho) {
+        if (!jaTenho) {
             user.addGame(game);
             childUpdates.put(mAuth.getCurrentUser().getUid() + "/gamesJogados", user.getGamesJogados());
             drUsers.updateChildren(childUpdates);
-            Toast.makeText(this, "O jogo: "+ game.getNome() + " foi adicionado a sua lista" , Toast.LENGTH_SHORT).show();
-        }else{
+            Toast.makeText(this, "O jogo: " + game.getNome() + " foi adicionado a sua lista", Toast.LENGTH_SHORT).show();
+        } else {
             Toast.makeText(this, "O jogo: " + game.getNome() + " já foi adicinado na sua lista", Toast.LENGTH_SHORT).show();
         }
     }

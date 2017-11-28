@@ -25,18 +25,37 @@ public class DetailsGameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details_game);
         this.mAuth = FirebaseAuth.getInstance();
         this.authListener = new FireBaseAuthListener(this);
-        Intent i = getIntent();
-        Games game = (Games) i.getSerializableExtra("game");
+        Intent intent = getIntent();
+        Games game = (Games) intent.getSerializableExtra("game");
+
         //TextView name = (TextView) findViewById(R.id.game_name);
         TextView starRate = (TextView) findViewById(R.id.rate);
         TextView descricacao = (TextView) findViewById(R.id.descricao);
         TextView categoria = (TextView) findViewById(R.id.categoria);
+        TextView desenvolVedor = (TextView) findViewById(R.id.desenvolvedor);
+        TextView numjogadores = (TextView) findViewById(R.id.numjogadores);
+        TextView plataforma = (TextView) findViewById(R.id.plataforma);
+        TextView linguagem = (TextView) findViewById(R.id.linguagem);
 
         //name.setText(game.getNome());
         starRate.setText("Rank: " + game.getRatingBar());
         descricacao.setText("Descrição: \n" + game.getDescricao());
-        categoria.setText("Gênero: " + game.getCategoria());
+        categoria.setText("Categoria: " + game.getCategoria());
+        desenvolVedor.setText("Desenvolvedor: " + game.getDesenvolvedor());
+        String numero_jogadores = "Número de Jogadores: ";
 
+        for(int i=0;i<game.getNum_jogadores().size();i++)
+        {
+            numero_jogadores=numero_jogadores+game.getNum_jogadores().get(i)+",";
+        }
+        numjogadores.setText(numero_jogadores);
+        plataforma.setText("Plataforma: " + game.getPlataforma());
+        String linguagemTexto = "Linguagem: ";
+        for(int i =0 ;i<game.getLinguagem().size();i++) {
+            linguagemTexto = linguagemTexto + game.getLinguagem().get(i) + ",";
+        }
+
+        linguagem.setText(linguagemTexto);
         setTitle(game.getNome());
 
     }
