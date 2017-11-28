@@ -15,11 +15,11 @@ public class User {
     private ArrayList<Games> gamesJogados;
 
     public User() {
-        gamesJogados=new ArrayList<>();
+        gamesJogados = new ArrayList<>();
     }
 
-    public User(String name, String email) {
-        gamesJogados=new ArrayList<>();
+    public User(String name, String email,ArrayList<Games> jogados) {
+        this.gamesJogados = jogados;
         this.name = name;
         this.email = email;
     }
@@ -32,8 +32,11 @@ public class User {
         return email;
     }
 
-    public void addGame(Games game)
-    {
+    public ArrayList<Games> getGamesJogados() {
+        return gamesJogados;
+    }
+
+    public void addGame(Games game) {
 
         gamesJogados.add(game);
     }

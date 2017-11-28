@@ -1,3 +1,4 @@
+
 package br.edu.ifpe.tads.pdm.bog;
 
 import android.content.Context;
@@ -50,7 +51,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_item, null);
+
+            if(this._context instanceof HomeActivity) {
+                convertView = infalInflater.inflate(R.layout.list_item, null);
+            }else if(this._context instanceof MinhaListaActivity)
+            {
+                convertView = infalInflater.inflate(R.layout.my_list_games, null);
+
+            }
         }
 
         TextView txtListChild = (TextView) convertView
@@ -62,9 +70,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
-   @Override
+    @Override
     public int getChildrenCount(int groupPosition) {
-       //Pode dar merda. Se algum erro estranho acontecer, olhar este método - Lucas, João
+        //Pode dar merda. Se algum erro estranho acontecer, olhar este método - Lucas, João
         return 1;
     }
 

@@ -20,7 +20,8 @@
         <activity android:name=".SignUpActivity" />
         <activity android:name=".RatingGames" />
         <activity android:name=".DetailsGameActivity" />
-        <activity android:name=".AddGameActivity"></activity>
+        <activity android:name=".AddGameActivity" />
+        <activity android:name=".MinhaListaActivity"></activity>
     </application>
 
 </manifest>

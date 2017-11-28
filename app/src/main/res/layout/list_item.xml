@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/list_item"
+    >
 
     <TextView
         android:id="@+id/lblListItem"
@@ -35,6 +37,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="More"
-        android:onClick=""/>
+        />
+    <Button
+        android:id="@+id/add__my_list_jogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Adicionar Jogo a Minha Lista"
+        android:onClick="onClickAdicionarAMinhaLista">
+    </Button>
 
 </LinearLayout>

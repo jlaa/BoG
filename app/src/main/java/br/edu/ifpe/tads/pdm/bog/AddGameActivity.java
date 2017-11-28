@@ -37,9 +37,6 @@ public class AddGameActivity extends AppCompatActivity {
         drGames.push().setValue(new Games(nome,ranking,categoria,descricao));
         startActivity(intent);
         finish();
-
-
-
     }
 
 }

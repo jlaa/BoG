@@ -14,6 +14,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+
+import br.edu.ifpe.tads.pdm.bog.Model.Games;
 import br.edu.ifpe.tads.pdm.bog.Model.User;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -30,6 +33,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void buttonSingUpClick(View view) {
+        final ArrayList<Games> gamesJogados = new ArrayList();
         EditText edName = (EditText) findViewById(R.id.name_register);
         EditText edMail = (EditText) findViewById(R.id.email_register);
         EditText edPassword = (EditText) findViewById(R.id.senha_register);
@@ -44,7 +48,7 @@ public class SignUpActivity extends AppCompatActivity {
                 String msg = task.isSuccessful() ? "SIGN UP OK!" : "SIGN UP ERROR!";
                 Toast.makeText(SignUpActivity.this, msg, Toast.LENGTH_SHORT).show();
                 if (task.isSuccessful()) {
-                    User tempUser = new User(name, email);
+                    User tempUser = new User(name, email,gamesJogados);
                     DatabaseReference drUsers = FirebaseDatabase.getInstance().getReference("users");
                     drUsers.child(mAuth.getCurrentUser().getUid()).setValue(tempUser);
                 }
