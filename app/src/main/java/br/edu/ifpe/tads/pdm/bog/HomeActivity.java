@@ -64,6 +64,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTitle("Página Inicial");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         this.mAuth = FirebaseAuth.getInstance();

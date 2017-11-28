@@ -25,6 +25,7 @@ public class AddGameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTitle("Cadastro de Jogo");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_game);
     }
