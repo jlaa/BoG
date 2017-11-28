@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,6 +59,8 @@ public class MinhaListaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_minha_lista);
 
+        final TextView nomePerfil = (TextView)findViewById(R.id.perfilName);
+
         this.mAuth = FirebaseAuth.getInstance();
         this.authListener = new FireBaseAuthListener(this);
 
@@ -97,6 +100,7 @@ public class MinhaListaActivity extends AppCompatActivity {
                     user = childSnapshot.getValue(User.class);
                     if (user != null) {
                         if (user.getEmail().equals(mAuth.getCurrentUser().getEmail())) {
+                            nomePerfil.setText(user.getName());
                             //drawerLayout
                             String txtLogout = getResources().getString(R.string.logout);
                             String txtHelp = getResources().getString(R.string.help);

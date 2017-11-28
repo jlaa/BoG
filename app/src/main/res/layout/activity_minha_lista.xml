@@ -7,6 +7,35 @@
     android:orientation="vertical"
     tools:context="br.edu.ifpe.tads.pdm.bog.MinhaListaActivity">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:orientation="vertical"
+        android:background="@mipmap/grade">
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="150dp"
+            android:src="@mipmap/penguinboss"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"/>
+        <TextView
+            android:id="@+id/perfilName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="20dp"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
+
     <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
@@ -27,10 +56,12 @@
 
 
                 <TextView
+                    android:text="Minha lista de jogos:"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Lista dos Jogos Jogados:"
-                    android:textSize="20dp" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_marginLeft="10dp"
+                    android:textStyle="bold"/>
 
 
                 <ExpandableListView
@@ -40,10 +71,6 @@
             </LinearLayout>
 
         </FrameLayout>
-
-
-        <!-- The navigation drawer -->
-
 
         <ListView
             android:id="@+id/left_drawer"
@@ -57,5 +84,6 @@
 
 
     </android.support.v4.widget.DrawerLayout>
+    </LinearLayout>
 
 </LinearLayout>
