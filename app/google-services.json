@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "210006915872",
+    "firebase_url": "https://bogproject-ce712.firebaseio.com",
+    "project_id": "bogproject-ce712",
+    "storage_bucket": "bogproject-ce712.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:210006915872:android:77bc92766af9e108",
+        "android_client_info": {
+          "package_name": "br.edu.ifpe.tads.pdm.bog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "210006915872-eroop08roc3a10kul8gjbmd05kir0tae.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.edu.ifpe.tads.pdm.bog",
+            "certificate_hash": "669ecc9ff7407a4ab28e884e441c0787c3223430"
+          }
+        },
+        {
+          "client_id": "210006915872-emoif6je62bt1qh2gaslipkdj1hbpsqs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.edu.ifpe.tads.pdm.bog",
+            "certificate_hash": "eb9230711289330b9e144c717865c26041c5bd74"
+          }
+        },
+        {
+          "client_id": "210006915872-4aeckghs5hfeojgttha1ge0isi6cau2d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUQEg13iUOogzTO5Jw3JF4nxaHggZnw0I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "210006915872-4aeckghs5hfeojgttha1ge0isi6cau2d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
