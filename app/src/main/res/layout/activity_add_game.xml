@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/cor1"
     tools:context="br.edu.ifpe.tads.pdm.bog.AddGameActivity">
 
     <LinearLayout
@@ -15,27 +16,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Nome do Jogo"
+            android:textColorHint="@color/cor3"
+            android:textColor="@color/cor3"
             android:id="@+id/add_name_game"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Categoria"
+            android:textColorHint="@color/cor3"
+            android:textColor="@color/cor3"
             android:id="@+id/add_categoria_game"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Desenvolvedor"
+            android:textColorHint="@color/cor3"
+            android:textColor="@color/cor3"
             android:id="@+id/add_desenvolvedor_game"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Plataforma"
+            android:textColorHint="@color/cor3"
+            android:textColor="@color/cor3"
             android:id="@+id/add_plataforma_game"/>
         <TextView
             android:text="Número de jogadores:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#000000"
+            android:textColor="@color/cor3"
+            android:textStyle="bold"
             android:layout_marginTop="10dp"/>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -45,18 +55,22 @@
             <CheckBox android:id="@+id/checkbox_SINGLE"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/cor2"
                 android:text="Um jogador"/>
             <CheckBox android:id="@+id/checkbox_MULTIPLAYER"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/cor2"
                 android:text="Multijogador Local"/>
             <CheckBox android:id="@+id/checkbox_ONLINE"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/cor2"
                 android:text="Multijogador Online"/>
             <CheckBox android:id="@+id/checkbox_COOPERATIVE"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/cor2"
                 android:text="Cooperativo"/>
         </LinearLayout>
 
@@ -65,7 +79,8 @@
             android:text="Linguagens disponíveis:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#000000"
+            android:textColor="@color/cor3"
+            android:textStyle="bold"
             android:layout_marginTop="10dp"/>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -75,18 +90,22 @@
             <CheckBox android:id="@+id/checkbox_EUA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/cor2"
                 android:text="EUA"/>
             <CheckBox android:id="@+id/checkbox_PT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/cor2"
                 android:text="PT"/>
             <CheckBox android:id="@+id/checkbox_FR"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/cor2"
                 android:text="FR"/>
             <CheckBox android:id="@+id/checkbox_ES"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/cor2"
                 android:text="ES"/>
         </LinearLayout>
 
@@ -94,7 +113,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Diga a qualidade do jogo para você:"
-            android:textColor="#000000"
+            android:textColor="@color/cor3"
+            android:textStyle="bold"
             android:layout_marginTop="10dp"/>
         <RatingBar
             android:id="@+id/add_rating_bar"
@@ -109,19 +129,23 @@
         <ScrollView
             android:id="@+id/ScrollView01"
             android:layout_width="match_parent"
-            android:layout_height="100dip">
+            android:layout_height="100dp">
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Descrição"
+                android:textColorHint="@color/cor3"
+                android:textColor="@color/cor3"
                 android:id="@+id/add_descricao_game"/>
         </ScrollView>
 
         <Button
             android:id="@+id/button_adGame"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/white"
             android:text="Adicionar Jogo"
             android:onClick="adicionarJogo"/>
 
