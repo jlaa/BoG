@@ -39,6 +39,13 @@
         android:text="More"
         android:onClick="moreButtonClickMyList"/>
 
+    <Button
+        android:id="@+id/remover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remover da Lista"
+        android:onClick="removerDaMinhaLista"/>
+
 
 </LinearLayout>
 
