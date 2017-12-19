@@ -2,13 +2,20 @@
 
 
 DEVEMOS:
+
+- criar uma base de jogos já no banco p/ tirar o botão de adicionar.
 - modificar forma de adicionar jogo na lista (tem que passar a referencia do jogo e não o jogo);
-- retirar jogo da lista
+- retirar jogo da lista;
 - adicionar imagens nos jogos*;
 - comentários nas páginas dos jogos (adicionar e remover);
 - imagem do usário; 
-- correção de bugs visuais;
-- melhorar design do aplicativo (cores, disposição dos elementos)
+- melhorar página de informações do jogo.
+
 
 TALVEZ:
 - implementar sistema de notificação;
+
+DÚVIDAS:
+- modelando um banco não relacional? como funciona?
+- referência de jogos em usuários? como fazer?
+- pode adicionar o jogo direto pelo firebase? criar a base de jogos no firebase manualmente pelo próprio site?
