@@ -3,7 +3,8 @@
     android:id="@+id/list_item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginLeft="10dp">
 
     <TextView
         android:id="@+id/lblListItem"
@@ -29,7 +30,8 @@
             android:maxWidth="20dp"
             android:minWidth="20dp"
             android:numStars="5"
-            android:stepSize="1" />
+            android:stepSize="1"
+            />
     </LinearLayout>
 
     <Button
@@ -37,8 +39,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="More"
-        android:onClick="moreButtonClickMyList"/>
+        android:onClick="moreButtonClickMyList"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/white"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/remover"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:text="Remover da Lista"
+        android:layout_marginTop="10dp"
+        android:onClick="removerDaMinhaLista"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/white"
+        android:textStyle="bold"/>
 
 
 </LinearLayout>
-

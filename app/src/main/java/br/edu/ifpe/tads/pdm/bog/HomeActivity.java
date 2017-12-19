@@ -50,9 +50,11 @@ public class HomeActivity extends AppCompatActivity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
 
-    // Pega o game que foi clicado naquela expandable lista.
+    // Pega a referência do jogo que foi clicado naquela expandable lista.
     private Games game;
     private User user;
+    private List<String> gameReferenceUID;
+    private String gameReferenceUIDclicado;
 
 
     private FireBaseAuthListener authListener;
@@ -61,6 +63,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private DatabaseReference drGames;
     private DatabaseReference drUsers;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,12 +140,15 @@ public class HomeActivity extends AppCompatActivity {
         drGames.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                gameReferenceUID = new ArrayList<>();
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     Games games = childSnapshot.getValue(Games.class);
+
+
                     if (!listDataHeader.contains(games.getNome())) {
                         if (games != null) {
                             prepareListData(games);
+                            gameReferenceUID.add(childSnapshot.getKey());
                         }
                     }
                 }
@@ -157,6 +164,7 @@ public class HomeActivity extends AppCompatActivity {
                                                 int groupPosition, long id) {
                         // game = (Games) parent.getAdapter().getItem(groupPosition);
                         game = (Games) parent.getExpandableListAdapter().getChild(groupPosition, groupPosition);
+                        gameReferenceUIDclicado = gameReferenceUID.get(groupPosition);
                         return false;
                     }
 

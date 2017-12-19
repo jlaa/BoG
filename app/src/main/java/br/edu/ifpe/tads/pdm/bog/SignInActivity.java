@@ -29,24 +29,29 @@ public class SignInActivity extends AppCompatActivity {
     public void buttonSingInClick(View v) {
         EditText edEmail = (EditText) findViewById(R.id.email_login);
         EditText edPassword = (EditText) findViewById(R.id.senha_login);
-
+        if(!(edEmail.getText().toString().equals(""))&&!(edPassword.getText().toString().equals(""))) {
         String email = edEmail.getText().toString();
         String password = edPassword.getText().toString();
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                String msg ;
-                if (task.isSuccessful()) {
-                    msg = "SIGN IN OK!";
-                    Toast.makeText(SignInActivity.this, msg, Toast.LENGTH_SHORT).show();
-                } else {
-                    msg= "SIGN IN ERROR!";
-                    Toast.makeText(SignInActivity.this, msg, Toast.LENGTH_SHORT).show();
-                }
 
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    String msg;
+                    if (task.isSuccessful()) {
+                        msg = "SIGN IN OK!";
+                        Toast.makeText(SignInActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    } else {
+                        msg = "SIGN IN ERROR!";
+                        Toast.makeText(SignInActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
+        }else
+            {
+                Toast.makeText(SignInActivity.this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
             }
-        });
     }
 
     public void toRegister(View view)

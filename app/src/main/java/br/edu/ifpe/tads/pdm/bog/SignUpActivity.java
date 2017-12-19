@@ -37,23 +37,28 @@ public class SignUpActivity extends AppCompatActivity {
         EditText edName = (EditText) findViewById(R.id.name_register);
         EditText edMail = (EditText) findViewById(R.id.email_register);
         EditText edPassword = (EditText) findViewById(R.id.senha_register);
+        if(!(edName.getText().toString().equals(""))&&!(edMail.getText().toString().equals(""))
+                &&!(edPassword.getText().toString().equals(""))) {
         final String name = edName.getText().toString();
         final String email = edMail.getText().toString();
         final String password = edPassword.getText().toString();
-
-        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                String msg = task.isSuccessful() ? "SIGN UP OK!" : "SIGN UP ERROR!";
-                Toast.makeText(SignUpActivity.this, msg, Toast.LENGTH_SHORT).show();
-                if (task.isSuccessful()) {
-                    User tempUser = new User(name, email,gamesJogados);
-                    DatabaseReference drUsers = FirebaseDatabase.getInstance().getReference("users");
-                    drUsers.child(mAuth.getCurrentUser().getUid()).setValue(tempUser);
+            final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    String msg = task.isSuccessful() ? "SIGN UP OK!" : "SIGN UP ERROR!";
+                    Toast.makeText(SignUpActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    if (task.isSuccessful()) {
+                        User tempUser = new User(name, email, gamesJogados);
+                        DatabaseReference drUsers = FirebaseDatabase.getInstance().getReference("users");
+                        drUsers.child(mAuth.getCurrentUser().getUid()).setValue(tempUser);
+                    }
                 }
+            });
+        }else
+            {
+                Toast.makeText(SignUpActivity.this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
             }
-        });
     }
 
     @Override
