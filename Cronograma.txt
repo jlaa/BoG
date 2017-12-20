@@ -16,6 +16,4 @@ TALVEZ:
 - implementar sistema de notificação;
 
 DÚVIDAS:
-- modelando um banco não relacional? como funciona?
-- referência de jogos em usuários? como fazer?
-- pode adicionar o jogo direto pelo firebase? criar a base de jogos no firebase manualmente pelo próprio site?
+
