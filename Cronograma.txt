@@ -10,6 +10,7 @@ DEVEMOS:
   - Criar classe comentario com referencia ao id de usuario e do jogo.
 (1) - Imagem do usário; 
 (3) - Melhorar página de informações do jogo.
+(5) - Objeto games-jogados que contem avaliação do usuário, horas jogadas, status;
 
 
 TALVEZ:
