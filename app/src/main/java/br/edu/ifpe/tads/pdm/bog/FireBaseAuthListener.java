@@ -32,4 +32,5 @@ public class FireBaseAuthListener implements FirebaseAuth.AuthStateListener {
          activity.finish();
         }
     }
+
 }

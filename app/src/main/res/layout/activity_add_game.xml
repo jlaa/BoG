@@ -33,13 +33,22 @@
             android:textColorHint="@color/cor3"
             android:textColor="@color/cor3"
             android:id="@+id/add_desenvolvedor_game"/>
+
         <EditText
+            android:id="@+id/add_plataforma_game"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Plataforma"
+            android:textColor="@color/cor3"
+            android:textColorHint="@color/cor3" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nome da Imagem (incluir .jpg ou .png)"
             android:textColorHint="@color/cor3"
             android:textColor="@color/cor3"
-            android:id="@+id/add_plataforma_game"/>
+            android:id="@+id/add_imagem"/>
+
         <TextView
             android:text="Número de jogadores:"
             android:layout_width="wrap_content"

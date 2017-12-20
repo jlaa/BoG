@@ -52,12 +52,14 @@ public class AddGameActivity extends AppCompatActivity {
         EditText edDesenvolvedor = (EditText) findViewById(R.id.add_desenvolvedor_game);
         EditText edPlataforma = (EditText) findViewById(R.id.add_plataforma_game);
         RatingBar ratingBar = (RatingBar) findViewById(R.id.add_rating_bar);
+        EditText edImagem = (EditText) findViewById(R.id.add_imagem);
 
         String nome = edNome.getText().toString();
         String categoria = edCategoria.getText().toString();
         String descricao = edDescricao.getText().toString();
         String desenvolvedor = edDesenvolvedor.getText().toString();
         String plataforma = edPlataforma.getText().toString();
+        String imagem = edImagem.getText().toString();
 
 
         if (checkBoxSingle.isChecked()) {
@@ -88,7 +90,7 @@ public class AddGameActivity extends AppCompatActivity {
 
 
         float ranking = ratingBar.getRating();
-        drGames.push().setValue(new Games(nome, ranking, categoria, descricao, desenvolvedor, num, plataforma, ling));
+        drGames.push().setValue(new Games(nome, ranking, categoria, descricao, desenvolvedor, num, plataforma, ling, imagem));
         startActivity(intent);
         finish();
 

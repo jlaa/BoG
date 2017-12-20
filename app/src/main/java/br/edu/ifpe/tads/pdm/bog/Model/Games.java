@@ -14,12 +14,13 @@ public class Games implements Serializable {
     private final String nome;
     private final String categoria;
     private float ratingBar;
-    //private float imagem;
+    private String imagem;
     private final String descricao;
     private final String desenvolvedor;
     private final List<String> linguagem;
     private final List<String> num_jogadores;
     private final String plataforma;
+
 
 
     public Games(){
@@ -30,9 +31,10 @@ public class Games implements Serializable {
         this.num_jogadores=null;
         this.linguagem=null;
         this.plataforma=null;
+        this.imagem=null;
     }
 
-    public Games(String nome, float ratingBar, String categoria, String descricao, String desenvolvedor, List<String> num_jogadores, String plataforma, List<String> linguagem) {
+    public Games(String nome, float ratingBar, String categoria, String descricao, String desenvolvedor, List<String> num_jogadores, String plataforma, List<String> linguagem, String imagem) {
         this.nome = nome;
         this.ratingBar = ratingBar;
         this.categoria = categoria;
@@ -41,6 +43,7 @@ public class Games implements Serializable {
         this.num_jogadores = num_jogadores;
         this.plataforma = plataforma;
         this.linguagem = linguagem;
+        this.imagem = imagem;
     }
 
     public String getNome() {
@@ -70,4 +73,12 @@ public class Games implements Serializable {
     public List<String> getNum_jogadores() { return num_jogadores; }
 
     public String getPlataforma() { return plataforma; }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
 }

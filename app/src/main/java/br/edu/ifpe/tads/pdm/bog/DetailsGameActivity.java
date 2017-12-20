@@ -1,22 +1,36 @@
 package br.edu.ifpe.tads.pdm.bog;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
 
 import br.edu.ifpe.tads.pdm.bog.Model.Games;
 
 public class DetailsGameActivity extends AppCompatActivity {
     private FireBaseAuthListener authListener;
     private FirebaseAuth mAuth;
+    private ImageView fotinha;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +39,7 @@ public class DetailsGameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details_game);
         this.mAuth = FirebaseAuth.getInstance();
         this.authListener = new FireBaseAuthListener(this);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
         Intent intent = getIntent();
         Games game = (Games) intent.getSerializableExtra("game");
 
@@ -37,7 +52,8 @@ public class DetailsGameActivity extends AppCompatActivity {
         TextView plataforma = (TextView) findViewById(R.id.plataforma);
         TextView linguagem = (TextView) findViewById(R.id.linguagem);
 
-        //name.setText(game.getNome());
+
+
         starRate.setText("Rank: " + game.getRatingBar());
         descricacao.setText("Descrição: \n" + game.getDescricao());
         categoria.setText("Categoria: " + game.getCategoria());
@@ -58,6 +74,24 @@ public class DetailsGameActivity extends AppCompatActivity {
         linguagem.setText(linguagemTexto);
         setTitle(game.getNome());
 
+
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://bogproject-9a0af.appspot.com/").child(game.getImagem());
+        try {
+            final File localFile = File.createTempFile("images", "jpg");
+            storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    ImageView mImageView = (ImageView) findViewById(R.id.fotinha);
+                    mImageView.setImageBitmap(bitmap);
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                }
+            });
+        } catch (IOException e ) {}
     }
 
     @Override
