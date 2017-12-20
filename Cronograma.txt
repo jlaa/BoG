@@ -1,21 +1,20 @@
 ﻿	CRONOGRAMA PDM:
-
+PRIORIDADE (5 ~1)
 
 DEVEMOS:
 
-- criar uma base de jogos já no banco p/ tirar o botão de adicionar.
-- modificar forma de adicionar jogo na lista (tem que passar a referencia do jogo e não o jogo);
-- retirar jogo da lista;
-- adicionar imagens nos jogos*;
-- comentários nas páginas dos jogos (adicionar e remover);
-- imagem do usário; 
-- melhorar página de informações do jogo.
+(1) - Criar uma base de jogos já no banco p/ tirar o botão de adicionar.
+(5) - Modificar forma de adicionar jogo na lista (tem que passar a referencia do jogo e não o jogo);
+(4) - Adicionar imagens nos jogos;
+(5) - Comentários nas páginas dos jogos (adicionar e remover);
+  - Criar classe comentario com referencia ao id de usuario e do jogo.
+(1) - Imagem do usário; 
+(3) - Melhorar página de informações do jogo.
+(5) - Objeto games-jogados que contem avaliação do usuário, horas jogadas, status;
 
 
 TALVEZ:
 - implementar sistema de notificação;
 
 DÚVIDAS:
-- modelando um banco não relacional? como funciona?
-- referência de jogos em usuários? como fazer?
-- pode adicionar o jogo direto pelo firebase? criar a base de jogos no firebase manualmente pelo próprio site?
+
