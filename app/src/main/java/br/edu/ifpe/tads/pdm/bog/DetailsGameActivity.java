@@ -157,20 +157,34 @@ public class DetailsGameActivity extends AppCompatActivity {
                         }
                     }
                 }
-                //voto recem cadastrado
+
+
                 float ratingGlobal = game.getRatingBar();
                 //já tem o voto do cadastro
                 int votos = 1;
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    User usario = childSnapshot.getValue(User.class);
+                    //voto recem cadastrado
 
 
-                for (int i = 0; i < user.getGamesJogados().size(); i++) {
-                    if (user.getGamesJogados().get(i).getAvaliacao() > 0) {
-                        ratingGlobal = ratingGlobal + user.getGamesJogados().get(i).getAvaliacao();
-                        votos++;
+
+                    for (int i = 0; i < usario.getGamesJogados().size(); i++) {
+                        if (usario.getGamesJogados().get(i).getAvaliacao() > 0) {
+                            ratingGlobal = ratingGlobal + usario.getGamesJogados().get(i).getAvaliacao();
+                            votos++;
+                        }
                     }
                 }
-
-                starRate.setText(("Avaliação:" + (ratingGlobal / votos) + "/5"));
+                ratingGlobal = ratingGlobal/votos;
+                float casaDecimal = (ratingGlobal*10)%10;
+                if((casaDecimal >=3)&&(casaDecimal<=7))
+                {
+                    ratingGlobal=  (((ratingGlobal*10)-casaDecimal)) + 5;
+                    ratingGlobal = ratingGlobal/10;
+                    starRate.setText(("Avaliação Geral:" + ratingGlobal + "/5"));
+                }else {
+                    starRate.setText(("Avaliação Geral:" + Math.round(ratingGlobal) + "/5"));
+                }
 
             }
 
