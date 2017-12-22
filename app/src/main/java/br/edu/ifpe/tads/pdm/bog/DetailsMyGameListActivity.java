@@ -17,6 +17,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,22 +38,25 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import br.edu.ifpe.tads.pdm.bog.Model.Games;
+import br.edu.ifpe.tads.pdm.bog.Model.GamesJogados;
 import br.edu.ifpe.tads.pdm.bog.Model.User;
 
-public class DetailsGameActivity extends AppCompatActivity {
+public class DetailsMyGameListActivity extends AppCompatActivity {
     private FireBaseAuthListener authListener;
     private FirebaseAuth mAuth;
     private ImageView fotinha;
 
     private User user;
+
     private Games game;
 
     private DatabaseReference drUsers;
-
-
+    private DatabaseReference drGames;
 
     private ArrayList<String> mDataList;
     private ListView mDrawerList;
@@ -64,18 +69,17 @@ public class DetailsGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details_game);
+        setContentView(R.layout.activity_details_my_game_list);
         this.mAuth = FirebaseAuth.getInstance();
         this.authListener = new FireBaseAuthListener(this);
         final FirebaseDatabase fbDB = FirebaseDatabase.getInstance();
 
         drUsers = fbDB.getReference("users");
+        drGames = fbDB.getReference("games");
         FirebaseStorage storage = FirebaseStorage.getInstance();
         Intent intent = getIntent();
         game = (Games) intent.getSerializableExtra("game");
 
-
-        final List<String> status = new ArrayList();
 
         //TextView name = (TextView) findViewById(R.id.game_name);
         final TextView starRate = (TextView) findViewById(R.id.rate);
@@ -85,11 +89,28 @@ public class DetailsGameActivity extends AppCompatActivity {
         TextView numjogadores = (TextView) findViewById(R.id.numjogadores);
         TextView plataforma = (TextView) findViewById(R.id.plataforma);
         TextView linguagem = (TextView) findViewById(R.id.linguagem);
+        final RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+
+                Map<String, Object> childUpdates = new HashMap<>();
 
 
+                List<GamesJogados> gamesJogados = user.getGamesJogados();
+                for (int i = 0; i < gamesJogados.size(); i++) {
+                    if (gamesJogados.get(i).getGame().getNome().equals(game.getNome())) {
+                        gamesJogados.get(i).setAvaliacao(ratingBar.getRating());
+                        childUpdates.put(mAuth.getCurrentUser().getUid() + "/gamesJogados", user.getGamesJogados());
+                        drUsers.updateChildren(childUpdates);
+
+                    }
+                }
+            }
+        });
 
 
-        starRate.setText("Rank: " + game.getRatingBar()+"/5.0");
+        starRate.setText("Rank: " + game.getRatingBar() + "/5.0");
         descricacao.setText("Descrição: \n" + game.getDescricao());
         categoria.setText("Categoria: " + game.getCategoria());
         desenvolVedor.setText("Desenvolvedor: " + game.getDesenvolvedor());
@@ -134,10 +155,37 @@ public class DetailsGameActivity extends AppCompatActivity {
 
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     user = childSnapshot.getValue(User.class);
-                    dataSnapshot.getRef();
+
+                    final RadioButton radioDesejoJogar = (RadioButton) findViewById(R.id.radio_Desejo_Jogar);
+                    final RadioButton radioZerado = (RadioButton) findViewById(R.id.radio_Zerado);
+                    final RadioButton radioJogando = (RadioButton) findViewById(R.id.radio_Jogando);
                     if (user != null) {
                         if (user.getEmail().equals(mAuth.getCurrentUser().getEmail())) {
+                            List<GamesJogados> gamesJogados = user.getGamesJogados();
+                            for (int i = 0; i < gamesJogados.size(); i++) {
+                                if (gamesJogados.get(i).getGame().getNome().equals(game.getNome())) {
+                                    ratingBar.setRating(user.getGamesJogados().get(i).getAvaliacao());
+                                    GamesJogados gameUpdate = user.getGamesJogados().get(i);
+                                    String status = gameUpdate.getStatus();
+                                    if (status != null) {
+                                        if (status.equals("Jogando")) {
+                                            radioJogando.setChecked(true);
+                                            radioDesejoJogar.setChecked(false);
+                                            radioZerado.setChecked(false);
+                                        } else if (status.equals("Desejo Jogar")) {
+                                            radioDesejoJogar.setChecked(true);
+                                            radioJogando.setChecked(false);
+                                            radioZerado.setChecked(false);
+                                        } else if (status.equals("Zerado")) {
+                                            radioZerado.setChecked(true);
+                                            radioJogando.setChecked(false);
+                                            radioDesejoJogar.setChecked(false);
+                                        }
+                                    }
 
+                                    break;
+                                }
+                            }
                             //drawerLayout
                             String txtLogout = getResources().getString(R.string.logout);
                             String txtHelp = getResources().getString(R.string.help);
@@ -150,12 +198,13 @@ public class DetailsGameActivity extends AppCompatActivity {
                             mDataList.add(lista);
                             mDataList.add(txtLogout);
                             mDataList.add(txtHelp);
-                            mDrawerList.setAdapter(new ArrayAdapter(DetailsGameActivity.this,
+                            mDrawerList.setAdapter(new ArrayAdapter(DetailsMyGameListActivity.this,
                                     R.layout.drawer_list_item, R.id.drawer, mDataList));
                             break;
 
                         }
                     }
+
                 }
                 //voto recem cadastrado
                 float ratingGlobal = game.getRatingBar();
@@ -171,6 +220,7 @@ public class DetailsGameActivity extends AppCompatActivity {
                 }
 
                 starRate.setText(("Avaliação:" + (ratingGlobal / votos) + "/5"));
+
 
             }
 
@@ -192,7 +242,7 @@ public class DetailsGameActivity extends AppCompatActivity {
         // set up the drawer's list view with items and click listener
         mDrawerList.setAdapter(new ArrayAdapter<>(this,
                 R.layout.drawer_list_item, R.id.drawer, mDataList));
-        mDrawerList.setOnItemClickListener(new DetailsGameActivity.DrawerItemClickListener());
+        mDrawerList.setOnItemClickListener(new DetailsMyGameListActivity.DrawerItemClickListener());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -239,7 +289,6 @@ public class DetailsGameActivity extends AppCompatActivity {
     }
 
 
-
     //DrawerLayout
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -278,11 +327,11 @@ public class DetailsGameActivity extends AppCompatActivity {
                 if (users != null) {
                     mAuth.signOut();
                 } else {
-                    Toast.makeText(DetailsGameActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailsMyGameListActivity.this, "Error!", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case "Help":
-                Toast.makeText(DetailsGameActivity.this, "Não conseguimos lhe fornecer ajuda! Desculpa ;---;", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailsMyGameListActivity.this, "Não conseguimos lhe fornecer ajuda! Desculpa ;---;", Toast.LENGTH_SHORT).show();
                 break;
             case "Minha Lista":
                 Intent intent = new Intent(this, MinhaListaActivity.class);
@@ -292,7 +341,7 @@ public class DetailsGameActivity extends AppCompatActivity {
         }
 
         if (mAuth.getCurrentUser().getDisplayName() == text) {
-            Toast.makeText(DetailsGameActivity.this, "Olá " + mAuth.getCurrentUser().getDisplayName(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(DetailsMyGameListActivity.this, "Olá " + mAuth.getCurrentUser().getDisplayName(), Toast.LENGTH_SHORT).show();
 
         }
         mDrawerLayout.closeDrawer(mDrawerList);
@@ -314,5 +363,45 @@ public class DetailsGameActivity extends AppCompatActivity {
         }
 
     }
+
+    public void onRadioJogando(View v) {
+        Map<String, Object> childUpdates = new HashMap<>();
+        List<GamesJogados> gamesJogados = user.getGamesJogados();
+        RadioButton radioJogando = (RadioButton) findViewById(R.id.radio_Jogando);
+        for (int i = 0; i < gamesJogados.size(); i++) {
+            if (gamesJogados.get(i).getGame().getNome().equals(game.getNome())) {
+                gamesJogados.get(i).setStatus(radioJogando.getText().toString());
+                childUpdates.put(mAuth.getCurrentUser().getUid() + "/gamesJogados", user.getGamesJogados());
+                drUsers.updateChildren(childUpdates);
+            }
+        }
+    }
+
+    public void onRadioDesejo(View v) {
+        Map<String, Object> childUpdates = new HashMap<>();
+        List<GamesJogados> gamesJogados = user.getGamesJogados();
+        RadioButton radioDesejoJogar = (RadioButton) findViewById(R.id.radio_Desejo_Jogar);
+        for (int i = 0; i < gamesJogados.size(); i++) {
+            if (gamesJogados.get(i).getGame().getNome().equals(game.getNome())) {
+                gamesJogados.get(i).setStatus(radioDesejoJogar.getText().toString());
+                childUpdates.put(mAuth.getCurrentUser().getUid() + "/gamesJogados", user.getGamesJogados());
+                drUsers.updateChildren(childUpdates);
+            }
+        }
+    }
+
+    public void onRadioZerado(View v) {
+        Map<String, Object> childUpdates = new HashMap<>();
+        List<GamesJogados> gamesJogados = user.getGamesJogados();
+        RadioButton radioZerado = (RadioButton) findViewById(R.id.radio_Zerado);
+        for (int i = 0; i < gamesJogados.size(); i++) {
+            if (gamesJogados.get(i).getGame().getNome().equals(game.getNome())) {
+                gamesJogados.get(i).setStatus(radioZerado.getText().toString());
+                childUpdates.put(mAuth.getCurrentUser().getUid() + "/gamesJogados", user.getGamesJogados());
+                drUsers.updateChildren(childUpdates);
+            }
+        }
+    }
+
 
 }

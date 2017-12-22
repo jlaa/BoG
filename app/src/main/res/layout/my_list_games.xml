@@ -10,29 +10,10 @@
         android:id="@+id/lblListItem"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
-        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
         android:paddingTop="5dp"
-        android:textSize="17dip" />
+        android:textSize="20dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:descendantFocusability="blocksDescendants"
-        android:orientation="horizontal">
 
-        <RatingBar
-            android:id="@+id/ratingBar"
-            style="@style/ratingBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:maxWidth="20dp"
-            android:minWidth="20dp"
-            android:numStars="5"
-            android:stepSize="1"
-            />
-    </LinearLayout>
 
     <Button
         android:id="@+id/more"

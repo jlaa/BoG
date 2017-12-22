@@ -15,8 +15,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import br.edu.ifpe.tads.pdm.bog.Model.Games;
+import br.edu.ifpe.tads.pdm.bog.Model.GamesJogados;
 import br.edu.ifpe.tads.pdm.bog.Model.User;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -33,7 +34,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void buttonSingUpClick(View view) {
-        final ArrayList<Games> gamesJogados = new ArrayList();
+        final List<GamesJogados> gamesJogados = new ArrayList();
         EditText edName = (EditText) findViewById(R.id.name_register);
         EditText edMail = (EditText) findViewById(R.id.email_register);
         EditText edPassword = (EditText) findViewById(R.id.senha_register);

@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.edu.ifpe.tads.pdm.bog.Model.Games;
+import br.edu.ifpe.tads.pdm.bog.Model.GamesJogados;
 import br.edu.ifpe.tads.pdm.bog.Model.User;
 
 
@@ -63,7 +64,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private DatabaseReference drGames;
     private DatabaseReference drUsers;
-
 
 
     @Override
@@ -111,7 +111,7 @@ public class HomeActivity extends AppCompatActivity {
                                     R.layout.drawer_list_item, R.id.drawer, mDataList));
                             break;
                         } //olhar essa linha se der algo errado
-                         else {
+                        else {
                             user = null;
                         }
                     } else if (user == null) {
@@ -358,20 +358,27 @@ public class HomeActivity extends AppCompatActivity {
 
     public void onClickAdicionarJogo(View view) {
         Intent intent = new Intent(this, AddGameActivity.class);
+        Intent i = new Intent();
+
+
         startActivity(intent);
     }
 
     public void onClickAdicionarAMinhaLista(View v) {
         Map<String, Object> childUpdates = new HashMap<>();
+        GamesJogados gamesJogados = new GamesJogados();
+        gamesJogados.setAvaliacao(0);
+        gamesJogados.setStatus("Jogando");
+        gamesJogados.setGame(game);
         boolean jaTenho = false;
         for (int i = 0; i < user.getGamesJogados().size(); i++) {
-            if (user.getGamesJogados().get(i).getNome().equals(game.getNome())) {
+            if (user.getGamesJogados().get(i).getGame().getNome().equals(game.getNome())) {
                 jaTenho = true;
                 break;
             }
         }
         if (!jaTenho) {
-            user.addGame(game);
+            user.addGame(gamesJogados);
             childUpdates.put(mAuth.getCurrentUser().getUid() + "/gamesJogados", user.getGamesJogados());
             drUsers.updateChildren(childUpdates);
             Toast.makeText(this, "O jogo: " + game.getNome() + " foi adicionado a sua lista", Toast.LENGTH_SHORT).show();

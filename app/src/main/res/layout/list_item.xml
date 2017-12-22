@@ -1,50 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:id="@+id/list_item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/list_item"
-    >
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/lblListItem"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="17dip"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
+       android:paddingTop="5dp"
+        android:textSize="20dp" />
 
-    <LinearLayout
-        android:descendantFocusability="blocksDescendants"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <RatingBar
-        android:id="@+id/ratingBar"
-        style="@style/ratingBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:maxWidth="20dp"
-        android:minWidth="20dp"
-        android:numStars="5"
-        android:stepSize="1" />
-    </LinearLayout>
-    
+
+
+
     <Button
         android:id="@+id/more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="More"
         android:onClick="moreButtonClick"
-        />
+        android:text="More"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"/>
+
+
     <Button
         android:id="@+id/add__my_list_jogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onClickAdicionarAMinhaLista"
         android:text="Adicionar Jogo a Minha Lista"
-        android:onClick="onClickAdicionarAMinhaLista">
-    </Button>
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"></Button>
 
 </LinearLayout>
