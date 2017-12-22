@@ -65,6 +65,8 @@ public class HomeActivity extends AppCompatActivity {
     private DatabaseReference drGames;
     private DatabaseReference drUsers;
 
+    private int lastExpandedPosition = -1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,10 +166,19 @@ public class HomeActivity extends AppCompatActivity {
                                                 int groupPosition, long id) {
                         // game = (Games) parent.getAdapter().getItem(groupPosition);
                         game = (Games) parent.getExpandableListAdapter().getChild(groupPosition, groupPosition);
-                        gameReferenceUIDclicado = gameReferenceUID.get(groupPosition);
                         return false;
                     }
 
+                });
+                expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+                    @Override
+                    public void onGroupExpand(int groupPosition) {
+                        for (int g = 0; g < listDataHeader.size(); g++) {
+                            if (g != groupPosition) {
+                                expListView.collapseGroup(g);
+                            }
+                        }
+                    }
                 });
 
             }

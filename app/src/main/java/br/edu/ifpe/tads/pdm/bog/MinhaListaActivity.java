@@ -100,6 +100,16 @@ public class MinhaListaActivity extends AppCompatActivity {
                     }
 
                 });
+                expMyListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+                    @Override
+                    public void onGroupExpand(int groupPosition) {
+                        for (int g = 0; g < myListDataHeader.size(); g++) {
+                            if (g != groupPosition) {
+                                expMyListView.collapseGroup(g);
+                            }
+                        }
+                    }
+                });
 
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     user = childSnapshot.getValue(User.class);

@@ -52,7 +52,6 @@ public class DetailsGameActivity extends AppCompatActivity {
     private DatabaseReference drUsers;
 
 
-
     private ArrayList<String> mDataList;
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
@@ -87,9 +86,7 @@ public class DetailsGameActivity extends AppCompatActivity {
         TextView linguagem = (TextView) findViewById(R.id.linguagem);
 
 
-
-
-        starRate.setText("Rank: " + game.getRatingBar()+"/5.0");
+        starRate.setText("Rank: " + game.getRatingBar() + "/5.0");
         descricacao.setText("Descrição: \n" + game.getDescricao());
         categoria.setText("Categoria: " + game.getCategoria());
         desenvolVedor.setText("Desenvolvedor: " + game.getDesenvolvedor());
@@ -123,6 +120,7 @@ public class DetailsGameActivity extends AppCompatActivity {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
+
                 }
             });
         } catch (IOException e) {
@@ -167,22 +165,22 @@ public class DetailsGameActivity extends AppCompatActivity {
                     //voto recem cadastrado
 
 
-
                     for (int i = 0; i < usario.getGamesJogados().size(); i++) {
-                        if (usario.getGamesJogados().get(i).getAvaliacao() > 0) {
-                            ratingGlobal = ratingGlobal + usario.getGamesJogados().get(i).getAvaliacao();
-                            votos++;
+                        if (usario.getGamesJogados().get(i).getGame().getNome().equals(game.getNome())) {
+                            if (usario.getGamesJogados().get(i).getAvaliacao() > 0) {
+                                ratingGlobal = ratingGlobal + usario.getGamesJogados().get(i).getAvaliacao();
+                                votos++;
+                            }
                         }
                     }
                 }
-                ratingGlobal = ratingGlobal/votos;
-                float casaDecimal = (ratingGlobal*10)%10;
-                if((casaDecimal >=3)&&(casaDecimal<=7))
-                {
-                    ratingGlobal=  (((ratingGlobal*10)-casaDecimal)) + 5;
-                    ratingGlobal = ratingGlobal/10;
+                ratingGlobal = ratingGlobal / votos;
+                float casaDecimal = (ratingGlobal * 10) % 10;
+                if ((casaDecimal >= 3) && (casaDecimal <= 7)) {
+                    ratingGlobal = (((ratingGlobal * 10) - casaDecimal)) + 5;
+                    ratingGlobal = ratingGlobal / 10;
                     starRate.setText(("Avaliação Geral:" + ratingGlobal + "/5"));
-                }else {
+                } else {
                     starRate.setText(("Avaliação Geral:" + Math.round(ratingGlobal) + "/5"));
                 }
 
@@ -253,7 +251,6 @@ public class DetailsGameActivity extends AppCompatActivity {
     }
 
 
-
     //DrawerLayout
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -305,8 +302,8 @@ public class DetailsGameActivity extends AppCompatActivity {
 
         }
 
-        if (mAuth.getCurrentUser().getDisplayName() == text) {
-            Toast.makeText(DetailsGameActivity.this, "Olá " + mAuth.getCurrentUser().getDisplayName(), Toast.LENGTH_SHORT).show();
+        if (user.getName().equals(text)) {
+            Toast.makeText(DetailsGameActivity.this, "Olá " +user.getName(), Toast.LENGTH_SHORT).show();
 
         }
         mDrawerLayout.closeDrawer(mDrawerList);
