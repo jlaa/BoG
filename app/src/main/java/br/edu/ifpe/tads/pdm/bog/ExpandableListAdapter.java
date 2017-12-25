@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -64,9 +63,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.lblListItem);
 
-        txtListChild.setText(child.getCategoria());
-        RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id.ratingBar);
-        ratingBar.setRating(child.getRatingBar());
+        txtListChild.setText("Categoria: " + child.getCategoria());
+
         return convertView;
     }
 

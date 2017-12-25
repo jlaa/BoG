@@ -8,6 +8,7 @@
     <string name="drawer_open">Oper Drawer</string>
     <string name="drawer_close">Close Drawer</string>
     <string name="action_websearch">Sei la</string>
+    <string name="search_title">Pesquisar</string>
 
 
 </resources>

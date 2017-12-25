@@ -4,10 +4,15 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Toast;
+
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.edu.ifpe.tads.pdm.bog.Model.Games;
+import br.edu.ifpe.tads.pdm.bog.Model.GamesJogados;
 import br.edu.ifpe.tads.pdm.bog.Model.User;
 
 
@@ -41,7 +48,6 @@ public class HomeActivity extends AppCompatActivity {
     private ExpandableListView expListView;
     private List<String> listDataHeader;
     private HashMap<String, Games> listDataChild;
-
 
     private ArrayList<String> mDataList;
     private ListView mDrawerList;
@@ -63,8 +69,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private DatabaseReference drGames;
     private DatabaseReference drUsers;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +115,7 @@ public class HomeActivity extends AppCompatActivity {
                                     R.layout.drawer_list_item, R.id.drawer, mDataList));
                             break;
                         } //olhar essa linha se der algo errado
-                         else {
+                        else {
                             user = null;
                         }
                     } else if (user == null) {
@@ -164,10 +168,19 @@ public class HomeActivity extends AppCompatActivity {
                                                 int groupPosition, long id) {
                         // game = (Games) parent.getAdapter().getItem(groupPosition);
                         game = (Games) parent.getExpandableListAdapter().getChild(groupPosition, groupPosition);
-                        gameReferenceUIDclicado = gameReferenceUID.get(groupPosition);
                         return false;
                     }
 
+                });
+                expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+                    @Override
+                    public void onGroupExpand(int groupPosition) {
+                        for (int g = 0; g < listDataHeader.size(); g++) {
+                            if (g != groupPosition) {
+                                expListView.collapseGroup(g);
+                            }
+                        }
+                    }
                 });
 
             }
@@ -177,6 +190,7 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
+
         drGames.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -251,6 +265,21 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search_view, menu);
+
+        //Pega o Componente.
+        SearchView sv = (SearchView) menu.findItem(R.id.search).getActionView();
+        sv.setOnQueryTextListener(new SearchFiltro());
+
+        return true;
+    }
+
 
 
     //DrawerLayout
@@ -358,20 +387,27 @@ public class HomeActivity extends AppCompatActivity {
 
     public void onClickAdicionarJogo(View view) {
         Intent intent = new Intent(this, AddGameActivity.class);
+        Intent i = new Intent();
+
+
         startActivity(intent);
     }
 
     public void onClickAdicionarAMinhaLista(View v) {
         Map<String, Object> childUpdates = new HashMap<>();
+        GamesJogados gamesJogados = new GamesJogados();
+        gamesJogados.setAvaliacao(0);
+        gamesJogados.setStatus("Jogando");
+        gamesJogados.setGame(game);
         boolean jaTenho = false;
         for (int i = 0; i < user.getGamesJogados().size(); i++) {
-            if (user.getGamesJogados().get(i).getNome().equals(game.getNome())) {
+            if (user.getGamesJogados().get(i).getGame().getNome().equals(game.getNome())) {
                 jaTenho = true;
                 break;
             }
         }
         if (!jaTenho) {
-            user.addGame(game);
+            user.addGame(gamesJogados);
             childUpdates.put(mAuth.getCurrentUser().getUid() + "/gamesJogados", user.getGamesJogados());
             drUsers.updateChildren(childUpdates);
             Toast.makeText(this, "O jogo: " + game.getNome() + " foi adicionado a sua lista", Toast.LENGTH_SHORT).show();
@@ -380,4 +416,37 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+
+    private class SearchFiltro implements SearchView.OnQueryTextListener {
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            //Log.i("Script", "onQueryTextChange ->" +newText);
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            int encontrei = 0;
+            for(int i = 0; i < listDataHeader.size(); i++){
+                if(query.equals(listDataHeader.get(i))){
+                    Intent intent = new Intent(HomeActivity.this, DetailsGameActivity.class);
+                    Games intentGame;
+                    intentGame = listDataChild.get(query);
+                    intent.putExtra("game",intentGame);
+                    startActivity(intent);
+                    break;
+                }else{
+                    encontrei ++;
+                }
+            }
+            if(encontrei == listDataHeader.size()){
+                Toast.makeText(HomeActivity.this, "Jogo não encontrado.", Toast.LENGTH_SHORT).show();
+            }
+
+            return false;
+        }
+
+
+    }
 }

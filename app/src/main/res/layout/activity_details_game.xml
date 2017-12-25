@@ -84,27 +84,6 @@
             android:textSize="20sp" />
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="350dp"
-            android:background="@color/cor1"
-            android:id="@+id/view_comentarios"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/comentario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Comentário" />
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="buttonSendMessage"
-                android:text="Enviar" />
-
-        </LinearLayout>
-
     </LinearLayout>
 
 

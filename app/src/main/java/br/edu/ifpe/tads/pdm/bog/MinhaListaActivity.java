@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.edu.ifpe.tads.pdm.bog.Model.Games;
+import br.edu.ifpe.tads.pdm.bog.Model.GamesJogados;
 import br.edu.ifpe.tads.pdm.bog.Model.User;
 
 public class MinhaListaActivity extends AppCompatActivity {
@@ -60,6 +62,7 @@ public class MinhaListaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_minha_lista);
 
+
         final TextView nomePerfil = (TextView) findViewById(R.id.perfilName);
 
         this.mAuth = FirebaseAuth.getInstance();
@@ -73,12 +76,12 @@ public class MinhaListaActivity extends AppCompatActivity {
 
         drUsers = fbDB.getReference("users");
 
-
+        final RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         drUsers.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 myListDataHeader = new ArrayList<>();
-                myListDataChild =  new HashMap<>();
+                myListDataChild = new HashMap<>();
 
 
                 expMyListView = (ExpandableListView) findViewById(R.id.myListGames);
@@ -92,9 +95,20 @@ public class MinhaListaActivity extends AppCompatActivity {
                                                 int groupPosition, long id) {
                         // game = (Games) parent.getAdapter().getItem(groupPosition);
                         game = (Games) parent.getExpandableListAdapter().getChild(groupPosition, groupPosition);
+
                         return false;
                     }
 
+                });
+                expMyListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+                    @Override
+                    public void onGroupExpand(int groupPosition) {
+                        for (int g = 0; g < myListDataHeader.size(); g++) {
+                            if (g != groupPosition) {
+                                expMyListView.collapseGroup(g);
+                            }
+                        }
+                    }
                 });
 
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
@@ -118,11 +132,11 @@ public class MinhaListaActivity extends AppCompatActivity {
                                     R.layout.drawer_list_item, R.id.drawer, mDataList));
 
                             //lista de jogos jogados
-                            ArrayList<Games> minhaLista = user.getGamesJogados();
+                            List<GamesJogados> minhaLista = user.getGamesJogados();
                             for (int i = 0; i < minhaLista.size(); i++) {
-                                if (!myListDataHeader.contains(minhaLista.get(i).getNome())) {
+                                if (!myListDataHeader.contains(minhaLista.get(i).getGame().getNome())) {
                                     if (minhaLista.get(i) != null) {
-                                        prepareListMyGames(minhaLista.get(i));
+                                        prepareListMyGames(minhaLista.get(i).getGame());
                                     }
                                 }
                             }
@@ -131,6 +145,8 @@ public class MinhaListaActivity extends AppCompatActivity {
                     }
                 }
 
+
+
             }
 
             @Override
@@ -138,7 +154,6 @@ public class MinhaListaActivity extends AppCompatActivity {
 
             }
         });
-
 
 
         mTitle = mDrawerTitle = getTitle();
@@ -280,18 +295,23 @@ public class MinhaListaActivity extends AppCompatActivity {
 
     public void moreButtonClickMyList(View view) {
 
-        Intent intent = new Intent(MinhaListaActivity.this, DetailsGameActivity.class);
+        Intent intent = new Intent(MinhaListaActivity.this, DetailsMyGameListActivity.class);
         intent.putExtra("game", game);
         startActivity(intent);
 
     }
 
     public void removerDaMinhaLista(View view) {
-        List<Games> games = user.getGamesJogados();
-        Integer posicao = games.indexOf(game);
+        List<GamesJogados> games = user.getGamesJogados();
+        Integer posicao = null;
+        for (int i = 0; i < games.size(); i++) {
+            if (games.get(i).getGame().getNome().equals(game.getNome())) {
+                posicao = i;
+            }
+        }
         user.getGamesJogados().remove(posicao.intValue());
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put(mAuth.getCurrentUser().getUid() + "/gamesJogados",user.getGamesJogados());
+        childUpdates.put(mAuth.getCurrentUser().getUid() + "/gamesJogados", user.getGamesJogados());
         drUsers.updateChildren(childUpdates);
 
     }
