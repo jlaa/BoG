@@ -39,6 +39,7 @@
                             android:id="@+id/fotinha"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
+
                         <TextView
                             android:id="@+id/rateMy"
                             android:layout_width="wrap_content"
@@ -56,8 +57,7 @@
                             android:maxWidth="20dp"
                             android:minWidth="20dp"
                             android:numStars="5"
-                            android:stepSize="1"
-                            />
+                            android:stepSize="1" />
 
                         <TextView
                             android:id="@+id/rate"
@@ -134,8 +134,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
                                 android:onClick="onRadioJogando"
-                                android:text="Jogando"
-                                 />
+                                android:text="Jogando" />
 
                             <RadioButton
                                 android:id="@+id/radio_Zerado"
@@ -143,8 +142,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
                                 android:onClick="onRadioZerado"
-                                android:text="Zerado"
-                                 />
+                                android:text="Zerado" />
 
                             <RadioButton
                                 android:id="@+id/radio_Desejo_Jogar"
@@ -152,10 +150,58 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
                                 android:onClick="onRadioDesejo"
-                                android:text="Desejo Jogar"
-                                 />
+                                android:text="Desejo Jogar" />
 
                         </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="30dp"
+                            android:text="Comentarios:"
+                            android:textSize="20sp" />
+
+                        <ScrollView
+                            android:id="@+id/comentarios"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:id="@+id/comentario"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginTop="30dp"
+                                android:orientation="vertical"
+                                android:textSize="20sp" />
+                        </ScrollView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="30dp"
+                            android:text="Adicione um comentário sobre o jogo:"
+                            android:textSize="20sp" />
+
+                        <EditText
+                            android:id="@+id/Add_comentario"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="30dp"
+                            android:gravity="top"
+                            android:hint="Adicione um comentário "
+                            android:inputType="text|textMultiLine" />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="30dp"
+                            android:onClick="adicionarComentario"
+                            android:text="Adicionar Comentário" />
+
 
                     </LinearLayout>
 

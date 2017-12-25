@@ -15,7 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
@@ -42,6 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.edu.ifpe.tads.pdm.bog.Model.Comentario;
 import br.edu.ifpe.tads.pdm.bog.Model.Games;
 import br.edu.ifpe.tads.pdm.bog.Model.GamesJogados;
 import br.edu.ifpe.tads.pdm.bog.Model.User;
@@ -53,10 +56,18 @@ public class DetailsMyGameListActivity extends AppCompatActivity {
 
     private User user;
 
+    private User tempUser;
+
+
+
     private Games game;
+
 
     private DatabaseReference drUsers;
     private DatabaseReference drGames;
+    private DatabaseReference drComent;
+
+    private String idGame;
 
     private ArrayList<String> mDataList;
     private ListView mDrawerList;
@@ -76,6 +87,7 @@ public class DetailsMyGameListActivity extends AppCompatActivity {
 
         drUsers = fbDB.getReference("users");
         drGames = fbDB.getReference("games");
+        drComent = fbDB.getReference("comments");
         FirebaseStorage storage = FirebaseStorage.getInstance();
         Intent intent = getIntent();
         game = (Games) intent.getSerializableExtra("game");
@@ -156,6 +168,7 @@ public class DetailsMyGameListActivity extends AppCompatActivity {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     user = childSnapshot.getValue(User.class);
 
+
                     final RadioButton radioDesejoJogar = (RadioButton) findViewById(R.id.radio_Desejo_Jogar);
                     final RadioButton radioZerado = (RadioButton) findViewById(R.id.radio_Zerado);
                     final RadioButton radioJogando = (RadioButton) findViewById(R.id.radio_Jogando);
@@ -234,6 +247,65 @@ public class DetailsMyGameListActivity extends AppCompatActivity {
                 }
 
 
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        drGames.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    Games extra = childSnapshot.getValue(Games.class);
+                    if(extra.getNome().equals(game.getNome())){
+                        idGame = childSnapshot.getKey();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        drComent.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren())
+                {
+                    final Comentario comentario = childSnapshot.getValue(Comentario.class);
+
+                    if(idGame.equals(comentario.getIdGame()))
+                    {
+
+                        DatabaseReference drUsers =fbDB.getReference("users").child(comentario.getIdUsuario());
+                        drUsers.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                tempUser = dataSnapshot.getValue(User.class);
+                                LinearLayout linearLayout = (LinearLayout) findViewById(R.id.comentario);
+                                TextView textView = new TextView(DetailsMyGameListActivity.this);
+                                textView.setText(tempUser.getName()+": "+comentario.getTexto());
+                                textView.setTextSize(20);
+                                linearLayout.addView(textView);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+                    }
+
+
+                }
             }
 
             @Override
@@ -413,6 +485,20 @@ public class DetailsMyGameListActivity extends AppCompatActivity {
                 drUsers.updateChildren(childUpdates);
             }
         }
+    }
+
+    public void adicionarComentario(View v)
+    {
+        EditText editText =(EditText) findViewById(R.id.Add_comentario);
+        String texto = editText.getText().toString();
+        String idUsuario = mAuth.getCurrentUser().getUid();
+        Comentario comentario = new Comentario(texto,idGame,idUsuario);
+        drComent.push().setValue(comentario);
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.comentario);
+        linearLayout.removeAllViews();
+        Toast.makeText(DetailsMyGameListActivity.this, "Comentario Adicionado", Toast.LENGTH_SHORT).show();
+        editText.setText("");
+
     }
 
 
