@@ -134,4 +134,6 @@ public class DetailsGameActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 }
