@@ -24,7 +24,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Ranking dos Usuários"
-                android:textSize="20sp" />
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_marginTop="10dp"/>
 
 
             <!-- The main content view -->
@@ -35,33 +38,38 @@
 
                 <ScrollView
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_height="wrap_content"
                     android:fillViewport="true"
                     android:orientation="vertical">
 
                     <TableLayout
+                        android:layout_marginTop="10dp"
                         android:id="@+id/ranking"
+                        android:background="@color/white"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:stretchColumns="1">
 
-                        <TableRow>
+                        <TableRow
+                            android:background="@color/colorPrimary"
+                            android:padding="5dp">
 
                             <TextView
-                                android:padding="3dip"
+                                android:textColor="@color/white"
                                 android:text="Colocação"
                                 android:textSize="20sp" />
 
                             <TextView
+                                android:textColor="@color/white"
                                 android:layout_column="1"
                                 android:layout_gravity="center"
-                                android:padding="3dip"
                                 android:text="Usuário"
                                 android:textSize="20sp" />
 
                             <TextView
-                                android:padding="3dip"
+                                android:textColor="@color/white"
                                 android:text="Pontuação"
+                                android:layout_marginRight="10dp"
                                 android:textSize="20sp" />
                         </TableRow>
 

@@ -5,10 +5,11 @@
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
     <color name="gray">#373737</color>
+    <color name="lightgray">#e9e9e9</color>
     <color name="cor1">#efa002</color>
     <color name="cor2">#fdec70</color>
     <color name="cor3">#f3f5f4</color>
-    <color name="cor4">#fdd594</color>
+    <color name="cor4">#e4fdd594</color>
 
 
 </resources>
