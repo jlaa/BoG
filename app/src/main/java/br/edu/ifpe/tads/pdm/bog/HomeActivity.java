@@ -4,10 +4,15 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Toast;
+
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,7 +49,6 @@ public class HomeActivity extends AppCompatActivity {
     private List<String> listDataHeader;
     private HashMap<String, Games> listDataChild;
 
-
     private ArrayList<String> mDataList;
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
@@ -64,9 +69,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private DatabaseReference drGames;
     private DatabaseReference drUsers;
-
-    private int lastExpandedPosition = -1;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,6 +194,7 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
+
         drGames.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -266,6 +269,20 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search_view, menu);
+
+        SearchView sv = (SearchView) menu.findItem(R.id.search).getActionView();
+        sv.setOnQueryTextListener(new SearchFiltro());
+
+        return true;
+    }
+
 
 
     //DrawerLayout
@@ -406,4 +423,37 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+
+    private class SearchFiltro implements SearchView.OnQueryTextListener {
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            //Log.i("Script", "onQueryTextChange ->" +newText);
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            int encontrei = 0;
+            for(int i = 0; i < listDataHeader.size(); i++){
+                if(query.equals(listDataHeader.get(i))){
+                    Intent intent = new Intent(HomeActivity.this, DetailsGameActivity.class);
+                    Games intentGame;
+                    intentGame = listDataChild.get(query);
+                    intent.putExtra("game",intentGame);
+                    startActivity(intent);
+                    break;
+                }else{
+                    encontrei ++;
+                }
+            }
+            if(encontrei == listDataHeader.size()){
+                Toast.makeText(HomeActivity.this, "Jogo não encontrado.", Toast.LENGTH_SHORT).show();
+            }
+
+            return false;
+        }
+
+
+    }
 }

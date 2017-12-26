@@ -174,7 +174,7 @@ public class RankingActivity extends AppCompatActivity {
                     pontuacao.setTextSize(20);
                     colocacao.setText(""+(i+1)+"º");
                     usuario.setText(usuarios.get(i).getName());
-                    pontuacao.setText(""+usuarios.get(i).getPontuacao());
+                    pontuacao.setText(""+usuarios.get(i).getPontuacao()+" pontos");
                     tableRow.addView(colocacao);
                     tableRow.addView(usuario);
                     tableRow.addView(pontuacao);

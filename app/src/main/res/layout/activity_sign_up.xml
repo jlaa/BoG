@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/cor1"
+    android:background="@color/cor3"
     tools:context="br.edu.ifpe.tads.pdm.bog.SignUpActivity">
 
     <LinearLayout
@@ -18,24 +18,24 @@
         <EditText
             android:id="@+id/name_register"
             android:hint="Nome"
-            android:textColorHint="@color/cor3"
-            android:textColor="@color/cor3"
+            android:textColorHint="@color/cor1"
+            android:textColor="@color/cor1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <EditText
             android:id="@+id/email_register"
             android:hint="E-mail"
-            android:textColorHint="@color/cor3"
-            android:textColor="@color/cor3"
+            android:textColorHint="@color/cor1"
+            android:textColor="@color/cor1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <EditText
             android:id="@+id/senha_register"
             android:hint="Senha"
-            android:textColorHint="@color/cor3"
-            android:textColor="@color/cor3"
+            android:textColorHint="@color/cor1"
+            android:textColor="@color/cor1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"/>
