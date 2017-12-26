@@ -1,30 +1,51 @@
 package br.edu.ifpe.tads.pdm.bog.Model;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.io.Serializable;
+
 /**
- * Created by isabella on 20/12/2017.
+ * Created by LucasPC on 25/12/2017.
  */
+@IgnoreExtraProperties
+public class Comentario implements Serializable {
+    private String texto;
+    private String idGame;
+    private String idUsuario;
 
-public class Comentario {
+    public Comentario()
+    {
 
-    private final String comentario;
-    private final String id_user;
-    private final String id_jogo;
-
-    public Comentario(String comentario, String id_user, String id_jogo){
-        this.comentario = comentario;
-        this.id_user = id_user;
-        this.id_jogo = id_jogo;
     }
 
-    public String getComentario() {
-        return comentario;
+    public Comentario(String texto,String idGame,String idUsuario)
+    {
+        this.texto = texto;
+        this.idGame = idGame;
+        this.idUsuario = idUsuario;
     }
 
-    public String getId_user() {
-        return id_user;
+    public String getTexto() {
+        return texto;
     }
 
-    public String getId_jogo() {
-        return id_jogo;
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
+
+    public String getIdGame() {
+        return idGame;
+    }
+
+    public void setIdGame(String idGame) {
+        this.idGame = idGame;
+    }
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 }

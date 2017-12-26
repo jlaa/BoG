@@ -273,7 +273,6 @@ public class HomeActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_view, menu);
 
-        //Pega o Componente.
         SearchView sv = (SearchView) menu.findItem(R.id.search).getActionView();
         sv.setOnQueryTextListener(new SearchFiltro());
 
