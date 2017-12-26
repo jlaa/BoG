@@ -15,7 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +40,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.edu.ifpe.tads.pdm.bog.Model.Comentario;
 import br.edu.ifpe.tads.pdm.bog.Model.Games;
 import br.edu.ifpe.tads.pdm.bog.Model.User;
 
@@ -48,8 +51,15 @@ public class DetailsGameActivity extends AppCompatActivity {
 
     private User user;
     private Games game;
+    private User tempUser;
+
+
+    private String idGame;
+
 
     private DatabaseReference drUsers;
+    private DatabaseReference drGames;
+    private DatabaseReference drComent;
 
 
     private ArrayList<String> mDataList;
@@ -69,6 +79,8 @@ public class DetailsGameActivity extends AppCompatActivity {
         final FirebaseDatabase fbDB = FirebaseDatabase.getInstance();
 
         drUsers = fbDB.getReference("users");
+        drComent = fbDB.getReference("comments");
+        drGames = fbDB.getReference("games");
         FirebaseStorage storage = FirebaseStorage.getInstance();
         Intent intent = getIntent();
         game = (Games) intent.getSerializableExtra("game");
@@ -142,10 +154,12 @@ public class DetailsGameActivity extends AppCompatActivity {
                             String txtPerfil = user.getName();
                             String lista = "Minha Lista";
                             String home = "Home";
+                            String ranking = "Ranking";
                             mDataList = new ArrayList();
                             mDataList.add(home);
                             mDataList.add(txtPerfil);
                             mDataList.add(lista);
+                            mDataList.add(ranking);
                             mDataList.add(txtLogout);
                             mDataList.add(txtHelp);
                             mDrawerList.setAdapter(new ArrayAdapter(DetailsGameActivity.this,
@@ -184,6 +198,64 @@ public class DetailsGameActivity extends AppCompatActivity {
                     starRate.setText(("Avaliação Geral:" + Math.round(ratingGlobal) + "/5"));
                 }
 
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        drGames.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    Games extra = childSnapshot.getValue(Games.class);
+                    if (extra.getNome().equals(game.getNome())) {
+                        idGame = childSnapshot.getKey();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        drComent.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                    final Comentario comentario = childSnapshot.getValue(Comentario.class);
+
+                    if (idGame.equals(comentario.getIdGame())) {
+
+                        final DatabaseReference drUsers = fbDB.getReference("users").child(comentario.getIdUsuario());
+                        drUsers.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                final LinearLayout linearLayout = (LinearLayout) findViewById(R.id.comentario);
+                                tempUser = dataSnapshot.getValue(User.class);
+                                TextView textView = new TextView(DetailsGameActivity.this);
+                                textView.setText(tempUser.getName() + ": " + comentario.getTexto());
+                                textView.setTextSize(20);
+                                linearLayout.addView(textView);
+                                drUsers.removeEventListener(this);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+                    }
+
+
+                }
             }
 
             @Override
@@ -299,6 +371,10 @@ public class DetailsGameActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, MinhaListaActivity.class);
                 startActivity(intent);
                 break;
+            case "Ranking":
+                intent = new Intent(this, RankingActivity.class);
+                startActivity(intent);
+                break;
 
         }
 
@@ -322,6 +398,23 @@ public class DetailsGameActivity extends AppCompatActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             String drawerText = (String) parent.getItemAtPosition(position);
             selectItem(drawerText);
+        }
+
+    }
+    public void adicionarComentario(View v) {
+        EditText editText = (EditText) findViewById(R.id.Add_comentario);
+        String texto = editText.getText().toString();
+        if(!texto.equals("")) {
+            String idUsuario = mAuth.getCurrentUser().getUid();
+            Comentario comentario = new Comentario(texto, idGame, idUsuario);
+            drComent.push().setValue(comentario);
+            final LinearLayout linearLayout = (LinearLayout) findViewById(R.id.comentario);
+            linearLayout.removeAllViews();
+            Toast.makeText(DetailsGameActivity.this, "Comentario Adicionado", Toast.LENGTH_SHORT).show();
+            editText.setText("");
+        }else
+        {
+            Toast.makeText(this,"Favor digite algo no comentário!",Toast.LENGTH_SHORT).show();
         }
 
     }

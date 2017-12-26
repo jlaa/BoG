@@ -7,10 +7,7 @@
     android:background="@color/cor3"
     tools:context="br.edu.ifpe.tads.pdm.bog.DetailsMyGameListActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+
 
 
         <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,9 +15,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            <ScrollView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+                android:layout_height="fill_parent"
+                android:fillViewport="true"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -31,10 +30,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="20dp"
-                        android:layout_marginTop="20dp"
                         android:orientation="vertical"
-                        android:padding="10dp">
+                        >
 
                         <ImageView
                             android:id="@+id/fotinha"
@@ -45,6 +42,8 @@
                             android:id="@+id/rateMy"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+
+                            android:layout_marginLeft="20dp"
                             android:layout_marginTop="30dp"
                             android:text="Diga aqui a sua nota para o jogo:"
                             android:textSize="18sp" />
@@ -54,6 +53,8 @@
                             style="@style/ratingBarStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="30dp"
                             android:layout_weight="0"
                             android:maxWidth="20dp"
                             android:minWidth="20dp"
@@ -77,20 +78,15 @@
                             android:layout_marginTop="30dp"
                             android:textSize="20sp" />
 
-                        <ScrollView
-                            android:id="@+id/ScrollView01"
+
+                        <TextView
+                            android:id="@+id/descricao"
                             android:layout_width="wrap_content"
-                            android:layout_height="100dip">
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="30dp"
+                            android:textSize="20sp"></TextView>
 
-                            <TextView
-                                android:id="@+id/descricao"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="20dp"
-                                android:layout_marginTop="30dp"
-                                android:textSize="20sp"></TextView>
-
-                        </ScrollView>
 
                         <TextView
                             android:id="@+id/desenvolvedor"
@@ -181,33 +177,34 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:background="@color/white">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginTop="30dp"
-                            android:text="Adicione um comentário sobre o jogo:"
-                            android:textSize="20sp" />
+                            android:background="@color/cor3"
+                            android:orientation="vertical">
 
-                        <EditText
-                            android:id="@+id/Add_comentario"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginTop="30dp"
-                            android:gravity="top"
-                            android:hint="Adicione um comentário "
-                            android:inputType="text|textMultiLine" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginTop="30dp"
+                                android:text="Adicione um comentário sobre o jogo:"
+                                android:textSize="20sp" />
 
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginTop="30dp"
-                            android:onClick="adicionarComentario"
-                            android:text="Adicionar Comentário" />
+                            <EditText
+                                android:id="@+id/Add_comentario"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginTop="30dp"
+                                android:gravity="top"
+                                android:hint="Adicione um comentário "
+                                android:inputType="text|textMultiLine" />
+
+                            <Button
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginTop="30dp"
+                                android:onClick="adicionarComentario"
+                                android:text="Adicionar Comentário" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -228,7 +225,7 @@
         </android.support.v4.widget.DrawerLayout>
 
 
-    </LinearLayout>
+
 
 
 </LinearLayout>

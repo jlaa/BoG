@@ -62,7 +62,6 @@ public class DetailsMyGameListActivity extends AppCompatActivity {
     private Games game;
 
 
-
     private DatabaseReference drUsers;
     private DatabaseReference drGames;
     private DatabaseReference drComent;
@@ -108,14 +107,16 @@ public class DetailsMyGameListActivity extends AppCompatActivity {
 
                 Map<String, Object> childUpdates = new HashMap<>();
 
+                if (user != null) {
+                    List<GamesJogados> gamesJogados = user.getGamesJogados();
 
-                List<GamesJogados> gamesJogados = user.getGamesJogados();
-                for (int i = 0; i < gamesJogados.size(); i++) {
-                    if (gamesJogados.get(i).getGame().getNome().equals(game.getNome())) {
-                        gamesJogados.get(i).setAvaliacao(ratingBar.getRating());
-                        childUpdates.put(mAuth.getCurrentUser().getUid() + "/gamesJogados", user.getGamesJogados());
-                        drUsers.updateChildren(childUpdates);
+                    for (int i = 0; i < gamesJogados.size(); i++) {
+                        if (gamesJogados.get(i).getGame().getNome().equals(game.getNome())) {
+                            gamesJogados.get(i).setAvaliacao(ratingBar.getRating());
+                            childUpdates.put(mAuth.getCurrentUser().getUid() + "/gamesJogados", user.getGamesJogados());
+                            drUsers.updateChildren(childUpdates);
 
+                        }
                     }
                 }
             }
@@ -456,40 +457,47 @@ public class DetailsMyGameListActivity extends AppCompatActivity {
 
     public void onRadioJogando(View v) {
         Map<String, Object> childUpdates = new HashMap<>();
-        List<GamesJogados> gamesJogados = user.getGamesJogados();
-        RadioButton radioJogando = (RadioButton) findViewById(R.id.radio_Jogando);
-        for (int i = 0; i < gamesJogados.size(); i++) {
-            if (gamesJogados.get(i).getGame().getNome().equals(game.getNome())) {
-                gamesJogados.get(i).setStatus(radioJogando.getText().toString());
-                childUpdates.put(mAuth.getCurrentUser().getUid() + "/gamesJogados", user.getGamesJogados());
-                drUsers.updateChildren(childUpdates);
+        if (user != null) {
+            List<GamesJogados> gamesJogados = user.getGamesJogados();
+            RadioButton radioJogando = (RadioButton) findViewById(R.id.radio_Jogando);
+            for (int i = 0; i < gamesJogados.size(); i++) {
+                if (gamesJogados.get(i).getGame().getNome().equals(game.getNome())) {
+                    gamesJogados.get(i).setStatus(radioJogando.getText().toString());
+                    childUpdates.put(mAuth.getCurrentUser().getUid() + "/gamesJogados", user.getGamesJogados());
+                    drUsers.updateChildren(childUpdates);
+                }
             }
         }
     }
 
     public void onRadioDesejo(View v) {
         Map<String, Object> childUpdates = new HashMap<>();
-        List<GamesJogados> gamesJogados = user.getGamesJogados();
-        RadioButton radioDesejoJogar = (RadioButton) findViewById(R.id.radio_Desejo_Jogar);
-        for (int i = 0; i < gamesJogados.size(); i++) {
-            if (gamesJogados.get(i).getGame().getNome().equals(game.getNome())) {
-                gamesJogados.get(i).setStatus(radioDesejoJogar.getText().toString());
-                childUpdates.put(mAuth.getCurrentUser().getUid() + "/gamesJogados", user.getGamesJogados());
-                drUsers.updateChildren(childUpdates);
+
+        if (user != null) {
+            List<GamesJogados> gamesJogados = user.getGamesJogados();
+            RadioButton radioDesejoJogar = (RadioButton) findViewById(R.id.radio_Desejo_Jogar);
+            for (int i = 0; i < gamesJogados.size(); i++) {
+                if (gamesJogados.get(i).getGame().getNome().equals(game.getNome())) {
+                    gamesJogados.get(i).setStatus(radioDesejoJogar.getText().toString());
+                    childUpdates.put(mAuth.getCurrentUser().getUid() + "/gamesJogados", user.getGamesJogados());
+                    drUsers.updateChildren(childUpdates);
+                }
             }
         }
     }
 
     public void onRadioZerado(View v) {
         Map<String, Object> childUpdates = new HashMap<>();
-        List<GamesJogados> gamesJogados = user.getGamesJogados();
+        if (user != null) {
+            List<GamesJogados> gamesJogados = user.getGamesJogados();
 
-        RadioButton radioZerado = (RadioButton) findViewById(R.id.radio_Zerado);
-        for (int i = 0; i < gamesJogados.size(); i++) {
-            if (gamesJogados.get(i).getGame().getNome().equals(game.getNome())) {
-                gamesJogados.get(i).setStatus(radioZerado.getText().toString());
-                childUpdates.put(mAuth.getCurrentUser().getUid() + "/gamesJogados", user.getGamesJogados());
-                drUsers.updateChildren(childUpdates);
+            RadioButton radioZerado = (RadioButton) findViewById(R.id.radio_Zerado);
+            for (int i = 0; i < gamesJogados.size(); i++) {
+                if (gamesJogados.get(i).getGame().getNome().equals(game.getNome())) {
+                    gamesJogados.get(i).setStatus(radioZerado.getText().toString());
+                    childUpdates.put(mAuth.getCurrentUser().getUid() + "/gamesJogados", user.getGamesJogados());
+                    drUsers.updateChildren(childUpdates);
+                }
             }
         }
     }
@@ -497,13 +505,18 @@ public class DetailsMyGameListActivity extends AppCompatActivity {
     public void adicionarComentario(View v) {
         EditText editText = (EditText) findViewById(R.id.Add_comentario);
         String texto = editText.getText().toString();
-        String idUsuario = mAuth.getCurrentUser().getUid();
-        Comentario comentario = new Comentario(texto, idGame, idUsuario);
-        drComent.push().setValue(comentario);
-        final LinearLayout linearLayout = (LinearLayout) findViewById(R.id.comentario);
-        linearLayout.removeAllViews();
-        Toast.makeText(DetailsMyGameListActivity.this, "Comentario Adicionado", Toast.LENGTH_SHORT).show();
-        editText.setText("");
+        if(!texto.equals("")) {
+            String idUsuario = mAuth.getCurrentUser().getUid();
+            Comentario comentario = new Comentario(texto, idGame, idUsuario);
+            drComent.push().setValue(comentario);
+            final LinearLayout linearLayout = (LinearLayout) findViewById(R.id.comentario);
+            linearLayout.removeAllViews();
+            Toast.makeText(DetailsMyGameListActivity.this, "Comentario Adicionado", Toast.LENGTH_SHORT).show();
+            editText.setText("");
+        }else
+            {
+                Toast.makeText(this,"Favor digite algo no comentário!",Toast.LENGTH_SHORT).show();
+            }
 
     }
 
