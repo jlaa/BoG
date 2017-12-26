@@ -8,17 +8,19 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,22 +28,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import br.edu.ifpe.tads.pdm.bog.Model.Games;
 import br.edu.ifpe.tads.pdm.bog.Model.GamesJogados;
 import br.edu.ifpe.tads.pdm.bog.Model.User;
 
+public class RankingActivity extends AppCompatActivity {
 
-public class HomeActivity extends AppCompatActivity {
-
-
-    private ExpandableListAdapter listAdapter;
-    private ExpandableListView expListView;
-    private List<String> listDataHeader;
-    private HashMap<String, Games> listDataChild;
 
 
     private ArrayList<String> mDataList;
@@ -51,11 +47,8 @@ public class HomeActivity extends AppCompatActivity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
 
-    // Pega a referência do jogo que foi clicado naquela expandable lista.
     private Games game;
     private User user;
-    private List<String> gameReferenceUID;
-    private String gameReferenceUIDclicado;
 
 
     private FireBaseAuthListener authListener;
@@ -65,25 +58,28 @@ public class HomeActivity extends AppCompatActivity {
     private DatabaseReference drGames;
     private DatabaseReference drUsers;
 
-    private int lastExpandedPosition = -1;
+    private ArrayList<User> usuarios;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTitle("Página Inicial");
+        setTitle("Ranking");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_ranking);
         this.mAuth = FirebaseAuth.getInstance();
         this.authListener = new FireBaseAuthListener(this);
 
-        listDataHeader = new ArrayList<>();
-        listDataChild = new HashMap<>();
+
 
         final FirebaseDatabase fbDB = FirebaseDatabase.getInstance();
+        usuarios = new ArrayList();
 
         /*fbDB.setPersistenceEnabled(true);*/
         drGames = fbDB.getReference("games");
         drUsers = fbDB.getReference("users");
+        final TableLayout tableLayout = (TableLayout) findViewById(R.id.ranking);
+
+
 
         /*drUsers.keepSynced(true);
         drGames.keepSynced(true);*/
@@ -91,6 +87,31 @@ public class HomeActivity extends AppCompatActivity {
         drUsers.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot childSnpashot : dataSnapshot.getChildren()) {
+                    int pontuacao = 0;
+                    user = childSnpashot.getValue(User.class);
+
+                    List<GamesJogados> gamesJogados = user.getGamesJogados();
+                    for (int i = 0; i < gamesJogados.size(); i++) {
+                        switch (user.getGamesJogados().get(i).getStatus()) {
+                            case "Desejo Jogar":
+                                break;
+                            case "Jogando":
+                                pontuacao = pontuacao + 1;
+                                break;
+                            case "Zerado":
+                                pontuacao = pontuacao + 5;
+                                break;
+                        }
+                    }
+
+                    user.setPontuacao(pontuacao);
+                    usuarios.add(user);
+
+                }
+
+
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
 
                     user = childSnapshot.getValue(User.class);
@@ -103,7 +124,7 @@ public class HomeActivity extends AppCompatActivity {
                             String txtPerfil = user.getName();
                             String lista = "Minha Lista";
                             String home = "Home";
-                            String ranking= "Ranking";
+                            String ranking = "Ranking";
                             mDataList = new ArrayList();
                             mDataList.add(home);
                             mDataList.add(txtPerfil);
@@ -111,7 +132,7 @@ public class HomeActivity extends AppCompatActivity {
                             mDataList.add(ranking);
                             mDataList.add(txtLogout);
                             mDataList.add(txtHelp);
-                            mDrawerList.setAdapter(new ArrayAdapter(HomeActivity.this,
+                            mDrawerList.setAdapter(new ArrayAdapter(RankingActivity.this,
                                     R.layout.drawer_list_item, R.id.drawer, mDataList));
                             break;
                         } //olhar essa linha se der algo errado
@@ -122,97 +143,50 @@ public class HomeActivity extends AppCompatActivity {
                         String txtLogout = getResources().getString(R.string.logout);
                         String txtHelp = getResources().getString(R.string.help);
                         String txtPerfil = "Anônimo";
-                        String ranking= "Ranking";
+                        String ranking = "Ranking";
                         mDataList = new ArrayList();
                         mDataList.add(txtPerfil);
                         mDataList.add(ranking);
                         mDataList.add(txtLogout);
                         mDataList.add(txtHelp);
-                        mDrawerList.setAdapter(new ArrayAdapter(HomeActivity.this,
+                        mDrawerList.setAdapter(new ArrayAdapter(RankingActivity.this,
                                 R.layout.drawer_list_item, R.id.drawer, mDataList));
                         break;
                     }
 
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
-        drGames.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                gameReferenceUID = new ArrayList<>();
-                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                    Games games = childSnapshot.getValue(Games.class);
-
-
-                    if (!listDataHeader.contains(games.getNome())) {
-                        if (games != null) {
-                            prepareListData(games);
-                            gameReferenceUID.add(childSnapshot.getKey());
-                        }
-                    }
-                }
-                expListView = (ExpandableListView) findViewById(R.id.lvExp);
-
-                listAdapter = new ExpandableListAdapter(HomeActivity.this, listDataHeader, listDataChild);
-
-                expListView.setAdapter(listAdapter);
-                expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-
-                    @Override
-                    public boolean onGroupClick(ExpandableListView parent, View v,
-                                                int groupPosition, long id) {
-                        // game = (Games) parent.getAdapter().getItem(groupPosition);
-                        game = (Games) parent.getExpandableListAdapter().getChild(groupPosition, groupPosition);
-                        return false;
-                    }
-
-                });
-                expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-                    @Override
-                    public void onGroupExpand(int groupPosition) {
-                        for (int g = 0; g < listDataHeader.size(); g++) {
-                            if (g != groupPosition) {
-                                expListView.collapseGroup(g);
-                            }
-                        }
+                }//Fazendo oa ordenaçao pela pontuaçao dos usuarios
+                Collections.sort(usuarios,new Comparator() {
+                    public int compare(Object o1, Object o2) {
+                        User p1 = (User) o1;
+                        User p2 = (User) o2;
+                        return p1.getPontuacao() > p2.getPontuacao() ? -1 :
+                                (p1.getPontuacao() < p2.getPontuacao() ? +1 : 0);
                     }
                 });
+                for (int i = 0; i < usuarios.size(); i++) {
+                    TableRow tableRow = new TableRow(RankingActivity.this);
+                    TextView colocacao = new TextView(RankingActivity.this);
+                    colocacao.setTextSize(20);
+                    TextView usuario = new TextView(RankingActivity.this);
+                    usuario.setGravity(Gravity.CENTER);
+                    usuario.setTextSize(20);
+                    TextView pontuacao = new TextView(RankingActivity.this);
+                    pontuacao.setTextSize(20);
+                    colocacao.setText(""+(i+1)+"º");
+                    usuario.setText(usuarios.get(i).getName());
+                    pontuacao.setText(""+usuarios.get(i).getPontuacao());
+                    tableRow.addView(colocacao);
+                    tableRow.addView(usuario);
+                    tableRow.addView(pontuacao);
+                    tableLayout.addView(tableRow);
+
+                }
 
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-        drGames.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Games games = dataSnapshot.getValue(Games.class);
-                Toast.makeText(HomeActivity.this, "O jogo " + games.getNome() + " foi adicionado", Toast.LENGTH_SHORT);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
             }
         });
 
@@ -226,7 +200,7 @@ public class HomeActivity extends AppCompatActivity {
         // set up the drawer's list view with items and click listener
         mDrawerList.setAdapter(new ArrayAdapter<>(this,
                 R.layout.drawer_list_item, R.id.drawer, mDataList));
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mDrawerList.setOnItemClickListener(new RankingActivity.DrawerItemClickListener());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -257,12 +231,6 @@ public class HomeActivity extends AppCompatActivity {
                         getSupportActionBar().setTitle(mDrawerTitle);
                     }
                 };
-
-        /*// Set the drawer toggle as the DrawerListener
-        mDrawerLayout.addDrawerListener(mDrawerToggle);
-        if (savedInstanceState == null) {
-            selectItem("",0);
-        }*/
 
 
     }
@@ -307,24 +275,25 @@ public class HomeActivity extends AppCompatActivity {
                 if (users != null) {
                     mAuth.signOut();
                 } else {
-                    Toast.makeText(HomeActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RankingActivity.this, "Error!", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case "Help":
-                Toast.makeText(HomeActivity.this, "Não conseguimos lhe fornecer ajuda! Desculpa ;---;", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RankingActivity.this, "Não conseguimos lhe fornecer ajuda! Desculpa ;---;", Toast.LENGTH_SHORT).show();
                 break;
             case "Minha Lista":
                 Intent intent = new Intent(this, MinhaListaActivity.class);
                 startActivity(intent);
                 break;
             case "Ranking":
-                intent = new Intent(this,RankingActivity.class);
+                intent = new Intent(this, RankingActivity.class);
                 startActivity(intent);
                 break;
+
         }
 
         if (user.getName() == text) {
-            Toast.makeText(HomeActivity.this, "Olá " + user.getName(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(RankingActivity.this, "Olá " + user.getName(), Toast.LENGTH_SHORT).show();
 
         }
         mDrawerLayout.closeDrawer(mDrawerList);
@@ -360,50 +329,5 @@ public class HomeActivity extends AppCompatActivity {
         mAuth.removeAuthStateListener(authListener);
     }
 
-    private void prepareListData(Games games) {
-
-        listDataHeader.add(games.getNome());
-        listDataChild.put(games.getNome(), games);
-
-    }
-
-    public void moreButtonClick(View view) {
-
-        Intent intent = new Intent(HomeActivity.this, DetailsGameActivity.class);
-        intent.putExtra("game", game);
-        startActivity(intent);
-
-    }
-
-    public void onClickAdicionarJogo(View view) {
-        Intent intent = new Intent(this, AddGameActivity.class);
-        Intent i = new Intent();
-
-
-        startActivity(intent);
-    }
-
-    public void onClickAdicionarAMinhaLista(View v) {
-        Map<String, Object> childUpdates = new HashMap<>();
-        GamesJogados gamesJogados = new GamesJogados();
-        gamesJogados.setAvaliacao(0);
-        gamesJogados.setStatus("Jogando");
-        gamesJogados.setGame(game);
-        boolean jaTenho = false;
-        for (int i = 0; i < user.getGamesJogados().size(); i++) {
-            if (user.getGamesJogados().get(i).getGame().getNome().equals(game.getNome())) {
-                jaTenho = true;
-                break;
-            }
-        }
-        if (!jaTenho) {
-            user.addGame(gamesJogados);
-            childUpdates.put(mAuth.getCurrentUser().getUid() + "/gamesJogados", user.getGamesJogados());
-            drUsers.updateChildren(childUpdates);
-            Toast.makeText(this, "O jogo: " + game.getNome() + " foi adicionado a sua lista", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "O jogo: " + game.getNome() + " já foi adicinado na sua lista", Toast.LENGTH_SHORT).show();
-        }
-    }
 
 }

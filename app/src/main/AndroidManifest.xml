@@ -21,7 +21,8 @@
         <activity android:name=".DetailsGameActivity" />
         <activity android:name=".AddGameActivity" />
         <activity android:name=".MinhaListaActivity" />
-        <activity android:name=".DetailsMyGameListActivity"></activity>
+        <activity android:name=".DetailsMyGameListActivity" />
+        <activity android:name=".RankingActivity"></activity>
     </application>
 
 </manifest>

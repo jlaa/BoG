@@ -14,6 +14,7 @@ public class User {
     private String name;
     private String email;
     private List<GamesJogados> gamesJogados;
+    private Integer pontuacao;
 
     public User() {
         gamesJogados = new ArrayList();
@@ -52,5 +53,13 @@ public class User {
 
     public void setGamesJogados(List<GamesJogados> gamesJogados) {
         this.gamesJogados = gamesJogados;
+    }
+
+    public Integer getPontuacao() {
+        return pontuacao;
+    }
+
+    public void setPontuacao(Integer pontuacao) {
+        this.pontuacao = pontuacao;
     }
 }

@@ -142,10 +142,12 @@ public class DetailsGameActivity extends AppCompatActivity {
                             String txtPerfil = user.getName();
                             String lista = "Minha Lista";
                             String home = "Home";
+                            String ranking = "Ranking";
                             mDataList = new ArrayList();
                             mDataList.add(home);
                             mDataList.add(txtPerfil);
                             mDataList.add(lista);
+                            mDataList.add(ranking);
                             mDataList.add(txtLogout);
                             mDataList.add(txtHelp);
                             mDrawerList.setAdapter(new ArrayAdapter(DetailsGameActivity.this,
@@ -297,6 +299,10 @@ public class DetailsGameActivity extends AppCompatActivity {
                 break;
             case "Minha Lista":
                 Intent intent = new Intent(this, MinhaListaActivity.class);
+                startActivity(intent);
+                break;
+            case "Ranking":
+                intent = new Intent(this, RankingActivity.class);
                 startActivity(intent);
                 break;
 
